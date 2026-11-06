@@ -1,0 +1,927 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><title>RHINO NET - Jelajahi Kota, Bangun Jaringan!</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="theme-color" content="#06183d"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="RHINO NET">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" type="image/png" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
+<style>
+:root{--navy:#0a2a66;--blue:#1e6fe0;--sky:#5cc8ff;--or:#ff9f1a;--yl:#ffd23f;--ok:#22c55e;--bad:#ef4444}
+*{box-sizing:border-box;margin:0;font-family:'Baloo 2','Trebuchet MS',sans-serif}
+html,body{height:100%;overflow:hidden;background:#06183d;overscroll-behavior:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+body{position:fixed;inset:0;width:100%}
+#S{position:absolute;left:50%;top:50%;width:1280px;height:720px;overflow:hidden;background:#0a2a66;color:#fff}
+.scr{position:absolute;inset:0;background-size:cover;background-position:center}
+.cover{background-image:url(bg_cover.jpeg)}
+.logo{position:absolute;left:50px;top:180px;width:640px;
+  animation:logoIn 1s ease-out both, logoFloat 4s ease-in-out 1s infinite;
+  filter:drop-shadow(0 12px 14px #0008)}
+@keyframes logoIn{from{opacity:0}}
+@keyframes logoFloat{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-8px) scale(1.015)}
+}
+.menu{position:absolute;left:745px;top:180px;width:480px;display:flex;flex-direction:column;gap:18px}
+.mb{display:flex;align-items:center;gap:18px;padding:10px 24px 10px 22px!important;text-align:left!important}.mb svg{flex:none;filter:drop-shadow(0 2px 2px #0004)}.mb span{flex:1;text-align:center;padding-right:44px}
+.mb,.btn{border:3px solid #8fd6ff;border-radius:22px;background:linear-gradient(#2f86f0,#0f4db0);color:#fff;font-weight:800;font-size:28px;padding:12px 24px;cursor:pointer;box-shadow:0 6px 0 #082f73,0 10px 18px #0006;transition:.15s;text-align:center}
+.mb.o,.btn.o{background:linear-gradient(#ffb84d,#f47c00);border-color:#ffe29a;box-shadow:0 6px 0 #a24b00,0 10px 18px #0006;text-align:center}
+.mb:hover,.btn:hover{transform:translateY(-3px) scale(1.02);filter:brightness(1.1)}
+.mb:active,.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #082f73}
+.btn{font-size:22px;padding:8px 22px;text-align:center}.btn:disabled{filter:grayscale(1);opacity:.5;pointer-events:none}
+.ov{position:absolute;inset:0;background:#031030b8;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:20;animation:fi .25s}
+@keyframes fi{from{opacity:0}}@keyframes pop{from{transform:scale(.8);opacity:0}}
+.box{position:relative;background:linear-gradient(160deg,#123f94,#0a2a66);border:5px solid #6cc8ff;border-radius:28px;padding:26px 32px;max-width:1120px;max-height:660px;overflow-y:auto;overflow-x:hidden;box-shadow:0 0 40px #2aa3ff88,inset 0 0 30px #0a2a66;animation:pop .3s;min-width:520px}
+.box h2{color:var(--yl);font-size:34px;margin-bottom:8px}.box h3{color:var(--yl);font-size:22px}
+.x{position:absolute;right:14px;top:10px;background:var(--bad);border:3px solid #fff;color:#fff;border-radius:50%;width:38px;height:38px;font-size:20px;font-weight:800;cursor:pointer}
+input[type=text]{background:#fff;caret-color:#0a2a66;-webkit-user-select:text;user-select:text;pointer-events:auto;outline:none;width:100%;padding:12px 18px;font-size:26px;border-radius:16px;border:3px solid var(--sky);margin:14px 0;color:#0a2a66;font-weight:700}
+.tb{width:100%;border-collapse:collapse;font-size:20px}.tb td{padding:10px 14px;border:2px solid #6cc8ff55}.tb td:first-child{color:var(--yl);font-weight:800;white-space:nowrap}
+.say{align-items:flex-end;justify-content:flex-start}
+.say img{height:640px;margin-left:30px;filter:drop-shadow(0 10px 20px #000a);animation:pop .4s}
+.bub{position:relative;background:#fff;color:#0a2a66;border:5px solid var(--sky);border-radius:30px;padding:24px 30px;width:640px;margin:0 0 330px 10px;font-size:24px;line-height:1.3;font-weight:600;animation:pop .4s}
+.bub:before{content:"";position:absolute;left:-34px;bottom:50px;border:18px solid transparent;border-right:30px solid var(--sky)}
+.bub .btn{margin-top:16px}
+.top{position:absolute;left:0;right:0;top:0;height:130px;display:flex;align-items:center;justify-content:space-between;padding:10px 24px;pointer-events:none}.top>*{pointer-events:auto}
+.top img{height:130px}.pill{display:flex;gap:12px;align-items:center}
+.pill{transform:translateY(-26px);gap:12px}.pt{background:#0a2a66dd;border:3px solid var(--sky);border-radius:40px;height:58px;padding:0 30px 0 8px;font-size:28px;font-weight:800;display:flex;gap:10px;align-items:center;box-shadow:0 4px 10px #0006}.pt small{font-size:13px;display:block;line-height:.9;color:#fff;letter-spacing:.5px}.pt span#pts{line-height:.9;display:block}.coin{width:42px;height:42px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe98a,#f5b21b 60%,#d98a00);border:3px solid #ffd23f;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #0a2a66}
+.ib{width:58px;height:58px;border-radius:50%;border:3px solid var(--sky);background:#0a2a66dd;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 10px #0006;transition:.15s}.ib:hover{filter:brightness(1.25);transform:scale(1.07)}
+.map{background-image:url(bg_menu_game.png)}
+.nd{position:absolute;transform:translate(-50%,-50%);cursor:pointer;transition:.2s}
+.nd img{width:100%;display:block}.nd:hover{transform:translate(-50%,-54%) scale(1.07)}
+.nd.lk img{filter:grayscale(.9) brightness(.65)}
+
+.prog{position:absolute;left:20px;bottom:18px;width:300px;background:#0a2a66dd;border:3px solid var(--sky);border-radius:20px;padding:10px 16px;font-size:18px}
+.bar{display:flex;gap:4px;margin:6px 0}.bar i{flex:1;height:12px;border-radius:6px;background:#ffffff33}.bar i.on{background:linear-gradient(var(--yl),var(--or))}
+.q{font-size:26px;margin:10px 0 14px;font-weight:700}
+.op{display:block;width:100%;margin:8px 0;text-align:left;font-size:21px;padding:10px 18px;border-radius:16px;border:3px solid var(--sky);background:#1a5ac8;color:#fff;cursor:pointer;font-weight:600}
+.op:hover{background:#2d73e8}.op.g{background:var(--ok)!important}.op.r{background:var(--bad)!important}
+.fb{margin-top:14px;padding:14px 18px;border-radius:16px;font-size:20px;line-height:1.3}.fb.g{background:#14803c}.fb.r{background:#a32a2a}.fb .btn{margin-top:10px}
+.dk{min-height:420px;display:flex;gap:30px;align-items:center}.dk>div{flex:1}.dk p,.dk li{font-size:20px;line-height:1.35}.dk ul{padding-left:22px}.dk b{color:var(--yl)}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:20px}
+.scene{perspective:700px;height:340px;display:flex;align-items:center;justify-content:center;background:radial-gradient(#2d8cff55,transparent 70%);border-radius:24px;cursor:grab;touch-action:none}
+.d3{position:relative;width:1056px;max-width:100%;height:320px;border-radius:24px;overflow:hidden;background:none;border:none;cursor:grab}.d3:active{cursor:grabbing}
+.d3v{position:absolute;inset:0}.d3v canvas{display:block;width:100%;height:100%}
+.d3t{position:absolute;left:24px;top:14px;pointer-events:none;z-index:2}.d3t h2{margin:0;font-size:40px;line-height:1;text-shadow:0 3px 12px #000b}
+.d3s{position:absolute;right:16px;bottom:12px;z-index:2;padding:0}.ib.on{background:#1e6fe0;animation:fl 1s ease-in-out infinite}
+.d3h{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-size:15px;color:#cfe8ff;pointer-events:none;text-shadow:0 2px 6px #000;z-index:2}
+.d3ld{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;font-size:26px;pointer-events:none}
+.d3p{font-size:15px;line-height:1.35;margin-top:8px}.d3x{font-size:14px;line-height:1.35;margin-top:6px;color:#e3f1ff}.d3x b{color:var(--yl)}
+.road{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.rd{fill:none;stroke:#e2f5ff;stroke-width:4;stroke-linecap:round;filter:drop-shadow(0 0 4px #8fd8ff) drop-shadow(0 0 9px #5cc8ff);animation:rdf var(--d) linear infinite;animation-delay:var(--s)}@keyframes rdf{from{stroke-dashoffset:var(--L)}to{stroke-dashoffset:0}}
+.obj{position:relative;width:200px;height:200px;transform-style:preserve-3d}.obj span{position:absolute;inset:0;font-size:170px;text-align:center;line-height:200px}
+.tp svg{width:100%;background:#ffffff14;border-radius:20px}
+.chips{display:flex;gap:10px;flex-wrap:wrap;min-height:50px;padding:8px;background:#0006;border-radius:14px;margin-bottom:10px}
+.chip{background:linear-gradient(var(--yl),var(--or));color:#4a2800;font-weight:800;font-size:20px;padding:6px 16px;border-radius:14px;cursor:grab}.chip.sel{outline:4px solid #fff}
+.row{display:flex;gap:12px;align-items:center;margin:6px 0;font-size:18px}.row>div:last-child{flex:1}
+.slot{width:170px;min-height:46px;border:3px dashed var(--sky);border-radius:14px;padding:4px;display:flex;align-items:center;justify-content:center;flex:none}.slot.g{border:3px solid var(--ok)}.slot.r{border:3px solid var(--bad)}
+.mem{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.cd{height:150px;perspective:600px;cursor:pointer}
+.cd div{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:.5s}.cd.f div{transform:rotateY(180deg)}
+.cd b,.cd i{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;border:3px solid var(--sky);display:flex;align-items:center;justify-content:center;font-style:normal;text-align:center;font-size:21px;font-weight:800}
+.cd b{background:linear-gradient(#2f86f0,#0f4db0);font-size:52px}.cd i{background:#fff;color:var(--navy);transform:rotateY(180deg)}.cd.m i{background:#c8f7d5;border-color:var(--ok)}.cd i svg{width:100%;height:100%}
+
+/* PERBAIKAN UI SIMULATOR */
+.sim{display:flex;flex-wrap:wrap;gap:16px;align-items:stretch;width:100%;}
+.sim svg{background:#06183d;border:3px solid var(--sky);border-radius:18px;flex:1 1 550px;min-width:500px;height:480px;cursor:grab;touch-action:none;overflow:hidden}
+.sim svg text{user-select:none;-webkit-user-select:none}
+.sim svg.del .nd-sim{cursor:pointer!important}
+.sim svg.del .nd-sim:hover{filter:drop-shadow(0 0 9px #f43f5e) brightness(1.12)}
+.sim svg:active{cursor:grabbing}
+.side{flex:1 1 250px;max-width:300px;display:flex;flex-direction:column;gap:8px;font-size:17px;overflow:hidden;}
+.side .btn{font-size:16px;padding:6px 10px;margin-bottom:2px}
+.log{background:#000a;border-radius:12px;padding:8px;font:14px monospace;height:130px;overflow-y:auto;overflow-x:hidden;word-wrap:break-word;}.log *{font-family:monospace}
+#cf{background:#0006;border-radius:12px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:14px;color:#9cd;width:100%;box-sizing:border-box;overflow:hidden;}
+.ip-box{display:flex;flex-direction:column;gap:8px;width:100%;margin-top:8px;}
+.ip-row{display:flex;align-items:center;justify-content:space-between;gap:5px;width:100%;}
+.ip-row span{font-size:11px;font-weight:800;color:var(--yl);width:58px;flex:0 0 58px;text-align:left;white-space:nowrap;overflow:hidden;}
+.ip-row input{flex:1;width:100%!important;min-width:0;font-size:14px;padding:4px;margin:0;text-align:center;border-radius:6px;background:#fff;border:2px solid var(--sky);color:#0a2a66;font-weight:700;}
+.toast{position:absolute;left:50%;top:100px;transform:translateX(-50%);background:var(--bad);border:3px solid #fff;border-radius:18px;padding:10px 24px;font-size:22px;z-index:30;animation:pop .3s}
+
+.top img{animation:logoFloat 4s ease-in-out infinite;filter:drop-shadow(0 8px 10px #0008)}
+.nd.cur{z-index:3;animation:glowActive 1.5s infinite alternate}
+@keyframes glowActive{from{filter:drop-shadow(0 0 10px #8fd8ff)}to{filter:drop-shadow(0 0 20px #5cc8ff) drop-shadow(0 0 10px #8fd8ff)}}
+@keyframes rays{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes gp{0%,100%{transform:translate(-50%,-50%) scale(.88);opacity:.75}50%{transform:translate(-50%,-50%) scale(1.12);opacity:1}}
+@keyframes ig{0%,100%{filter:drop-shadow(0 0 4px #9fdcff88) brightness(1)}50%{filter:drop-shadow(0 0 14px #7fd0ff88) brightness(1.05)}}
+.op.sel{background:var(--or)!important;border-color:#ffe29a}
+.sim.L .side{order:-1}.sim.L svg{height:410px}.lbt td{padding:8px 12px;font-size:20px}.lbt tr.me td{background:#ffd23f33}.lbt td:first-child{width:70px;text-align:center}.lbt td:last-child{text-align:right;color:var(--yl);font-weight:800}
+
+/* ---------- ROTATE HINT (portrait di HP/tablet) ---------- */
+#rot{display:none;position:fixed;inset:0;z-index:99999;background:radial-gradient(circle at 50% 40%,#123f94,#06183d 70%);color:#fff;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:22px;cursor:pointer;user-select:none;-webkit-user-select:none}
+#rot .ph{position:relative;width:76px;height:128px;border:6px solid #5cc8ff;border-radius:16px;background:#0a2a66;box-shadow:0 0 28px #2aa3ff88;animation:rotPhone 2.8s ease-in-out infinite}
+#rot .ph:before{content:"";position:absolute;left:50%;top:7px;width:22px;height:4px;border-radius:3px;background:#5cc8ff;transform:translateX(-50%)}
+#rot .ph:after{content:"\1F98F";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:34px}
+@keyframes rotPhone{0%,15%{transform:rotate(0)}50%,80%{transform:rotate(-90deg)}100%{transform:rotate(0)}}
+#rot .ar{font-size:44px;color:#ffd23f;animation:rotArrow 2.8s ease-in-out infinite}
+@keyframes rotArrow{0%,15%{opacity:0;transform:scale(.7)}40%,80%{opacity:1;transform:scale(1)}100%{opacity:0}}
+#rot h2{font-size:clamp(22px,6vw,34px);color:#ffd23f;line-height:1.1}
+#rot p{font-size:clamp(15px,4vw,20px);max-width:340px;opacity:.9;line-height:1.25}
+@media (orientation:portrait) and (pointer:coarse){#rot{display:flex}}
+
+#fs{display:none;position:fixed;right:max(8px,env(safe-area-inset-right));bottom:max(8px,env(safe-area-inset-bottom));z-index:9000;width:42px;height:42px;padding:0;border-radius:50%;border:3px solid #5cc8ff;background:#0a2a66cc;color:#fff;align-items:center;justify-content:center;cursor:pointer;opacity:.6;transition:.15s}
+#fs:hover,#fs:active{opacity:1;transform:scale(1.07)}
+#ios{display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:max(10px,env(safe-area-inset-bottom));z-index:100000;width:min(92vw,520px);background:#0a2a66f2;border:3px solid #5cc8ff;border-radius:18px;padding:10px 42px 10px 16px;color:#fff;font-size:16px;line-height:1.25;box-shadow:0 6px 20px #0008}
+#iosx{position:absolute;right:8px;top:6px;background:none;border:0;color:#fff;font-size:22px;cursor:pointer}
+</style></head><body><div id="S"></div>
+<div id="rot"><div class="ph"></div><div class="ar">↻</div><h2>Putar HP Anda ke Landscape</h2><p>Game RHINO NET paling nyaman dimainkan dalam mode layar mendatar. Ketuk layar ini untuk memutar otomatis.</p></div>
+<button id="fs" aria-label="Layar penuh"></button><div id="ios">Untuk bermain layar penuh: ketuk tombol <b>Bagikan</b> di Safari, lalu pilih <b>“Tambah ke Layar Utama”</b> dan buka game dari ikonnya.<button id="iosx" aria-label="Tutup">✕</button></div>
+<script>
+const S=document.getElementById('S');let name='',pts=0,done={},mute=false,AC;
+const vp=()=>{const v=window.visualViewport;return[v&&v.width||innerWidth,v&&v.height||innerHeight]};
+const fit=()=>{const[w,h]=vp();S.style.transform=`translate(-50%,-50%) scale(${Math.min(w/1280,h/720)})`};fit();
+addEventListener('resize',fit);addEventListener('orientationchange',()=>{fit();setTimeout(fit,150);setTimeout(fit,500)});
+if(window.visualViewport)visualViewport.addEventListener('resize',fit);
+/* ---------- LAYAR PENUH ---------- */
+(()=>{const D=document,E=D.documentElement,rq=E.requestFullscreen||E.webkitRequestFullscreen,ex=D.exitFullscreen||D.webkitExitFullscreen,
+fsEl=()=>D.fullscreenElement||D.webkitFullscreenElement,
+can=!!rq&&!!(D.fullscreenEnabled||D.webkitFullscreenEnabled),
+touch=matchMedia('(pointer:coarse)').matches,
+ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1),
+standalone=matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true;
+const enter=async()=>{if(!can||fsEl())return;try{await rq.call(E)}catch(e){}try{if(screen.orientation&&screen.orientation.lock)await screen.orientation.lock('landscape')}catch(e){}setTimeout(fit,200)};
+const rot=D.getElementById('rot');
+if(can)rot.addEventListener('click',enter);else rot.querySelector('p').textContent='Game RHINO NET paling nyaman dimainkan dalam mode layar mendatar. Pastikan kunci rotasi layar di HP Anda sudah dimatikan.';
+/* ketukan pertama di HP/tablet -> layar penuh otomatis */
+if(can&&touch&&!standalone){const once=e=>{if(e.target.closest&&e.target.closest('#fs'))return;D.removeEventListener('click',once,true);enter()};D.addEventListener('click',once,true)}
+/* tombol manual */
+const btn=D.getElementById('fs'),IN='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',OUT='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>';
+if(can&&!standalone){btn.style.display='flex';const sync=()=>{const f=!!fsEl();btn.innerHTML=f?OUT:IN;btn.title=f?'Keluar layar penuh':'Layar penuh'};sync();
+['fullscreenchange','webkitfullscreenchange'].forEach(n=>D.addEventListener(n,()=>{sync();setTimeout(fit,150);setTimeout(fit,500)}));
+btn.addEventListener('click',async e=>{e.stopPropagation();if(fsEl()){try{await ex.call(D)}catch(_){}}else enter()})}
+/* petunjuk iPhone: tambah ke layar utama */
+if(ios&&!can&&!standalone){let seen=0;try{seen=localStorage.getItem('rn_ios_tip')}catch(_){}
+if(!seen){const t=D.getElementById('ios');t.style.display='block';const close=()=>{t.style.display='none';try{localStorage.setItem('rn_ios_tip','1')}catch(_){}};D.getElementById('iosx').onclick=close;setTimeout(close,15000)}}
+})();
+const el=h=>{const t=document.createElement('div');t.innerHTML=h.trim();return t.firstChild};
+const shuf=a=>[...a].sort(()=>Math.random()-.5);
+/* ---------- AUDIO ---------- */
+function ac(){if(!AC)AC=new(window.AudioContext||webkitAudioContext)();if(AC.state=='suspended')AC.resume();return AC}
+function tone(f,t,d,ty='sine',v=.15){if(mute)return;const c=ac(),o=c.createOscillator(),g=c.createGain();o.type=ty;o.frequency.value=f;g.gain.setValueAtTime(v,c.currentTime+t);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+t+d);o.connect(g);g.connect(c.destination);o.start(c.currentTime+t);o.stop(c.currentTime+t+d)}
+const SFX={click:()=>tone(720,0,.08,'square',.05),ok:()=>[523,659,784].forEach((f,i)=>tone(f,i*.1,.25,'triangle')),bad:()=>[300,220].forEach((f,i)=>tone(f,i*.15,.3,'sawtooth',.07)),win:()=>[523,659,784,1046,784,1046,1318,1568].forEach((f,i)=>tone(f,i*.13,.35,'triangle'))};
+let bgT=0;function bg(){if(bgT)return;const ch=[[262,330,392,523],[220,277,330,440],[175,220,262,349],[196,247,294,392]];let i=0;const p=()=>{ch[i++%4].forEach((f,k)=>tone(f,k*.4,.9,'sine',.035))};p();bgT=setInterval(p,1700)}
+document.addEventListener('click',e=>{ac();bg();if(e.target.closest('button,.nd,.cd,.chip'))SFX.click()},true);
+/* ---------- UTIL UI ---------- */
+function clear(){S.querySelectorAll('.scr').forEach(e=>e.remove())}
+function modal(h,x=true){const o=el(`<div class="ov"><div class="box">${x?'<button class="x">✕</button>':''}${h}</div></div>`);S.appendChild(o);const b=o.firstChild;b.close=()=>o.remove();if(x)b.querySelector('.x').onclick=()=>{speechSynthesis.cancel();o.remove()};return b}
+function say(text,btn,cb){const o=el(`<div class="ov say"><img src="rhino.png"><div class="bub"><div>${text}</div><button class="btn o">${btn}</button></div></div>`);S.appendChild(o);o.querySelector('button').onclick=()=>{o.remove();cb&&cb()};return o}
+function toast(t){SFX.bad();const e=el(`<div class="toast">${t}</div>`);S.appendChild(e);setTimeout(()=>e.remove(),2200)}
+const P=(n,p)=>{if(!done[n])pts+=p;upd()};const upd=()=>{const e=document.getElementById('pts');if(e)e.textContent=pts};
+function finish(n){done[n]=1;map()}
+/* ---------- COVER ---------- */
+function cover(){clear();const d=el(`<div class="scr cover"><img class="logo" src="logo_rhino.png"><div class="menu"><button class="mb o" id="b1"><svg viewBox="0 0 24 24" width="44" height="44"><path d="M7 4.5v15l13-7.5z" fill="#fff"/></svg><span>MULAI</span></button><button class="mb" id="b2"><svg viewBox="0 0 24 24" width="46" height="46"><circle cx="12" cy="12" r="11" fill="#fff"/><circle cx="12" cy="7" r="1.8" fill="#0f4db0"/><rect x="10.6" y="10" width="2.8" height="8" rx="1.2" fill="#0f4db0"/></svg><span>INFO GAME</span></button><button class="mb" id="b3"><svg viewBox="0 0 24 24" width="50" height="50"><circle cx="12" cy="8" r="3.2" fill="#fff"/><path d="M5.5 19c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6z" fill="#fff"/><circle cx="4.6" cy="9.5" r="2.3" fill="#fff" opacity=".85"/><circle cx="19.4" cy="9.5" r="2.3" fill="#fff" opacity=".85"/><path d="M0.8 18c0-2.5 1.6-4.2 4-4.2-1 1.2-1.5 2.6-1.5 4.2zM23.2 18c0-2.5-1.6-4.2-4-4.2 1 1.2 1.5 2.6 1.5 4.2z" fill="#fff" opacity=".85"/></svg><span>PENGEMBANG</span></button><button class="mb" id="b4"><svg viewBox="0 0 24 24" width="50" height="50"><path d="M12 6.5C10 5 7 4.5 3 5v13c4-.5 7 0 9 1.5 2-1.5 5-2 9-1.5V5c-4-.5-7 0-9 1.5z" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"/><path d="M12 6.5v13" stroke="#fff" stroke-width="2"/></svg><span>REFERENSI</span></button></div></div>`);S.appendChild(d);
+d.querySelector('#b1').onclick=()=>{const b=modal(`<h2>Siapa namamu, Penjelajah?</h2><input type="text" id="nm" maxlength="24" placeholder="Tuliskan namamu..."><button class="btn o" style="width:100%">LANJUT</button>`);const go=()=>{const v=b.querySelector('#nm').value.trim().replace(/[<>&]/g,'');if(!v)return toast('Isi namamu dulu ya!');name=v;b.close();say(`Halo, <b>${name}</b>! Selamat datang di RHINO NET, kota digital yang penuh tantangan!<br>Di kota ini, kamu akan belajar bagaimana komputer saling terhubung, mengenal perangkat jaringan, dan membangun jaringanmu sendiri.<br>Ada enam misi yang harus kamu selesaikan. Siap menjelajahi kota dan membangun jaringan?`,'AYO MULAI PETUALANGAN!',map)};b.querySelector('.btn').onclick=go;const ni=b.querySelector('#nm');ni.autocomplete='off';ni.onkeydown=e=>{e.stopPropagation();if(e.key=='Enter')go()};ni.onkeyup=ni.onkeypress=e=>e.stopPropagation();setTimeout(()=>ni.focus(),350)};
+d.querySelector('#b2').onclick=()=>modal(`<h2>Info Game</h2><table class="tb"><tr><td>Mata Pelajaran</td><td>Informatika</td></tr><tr><td>Fase/Kelas</td><td>F/XI</td></tr><tr><td>Tujuan Pembelajaran</td><td>Peserta didik mampu memahami konsep dasar jaringan komputer, mengidentifikasi fungsi perangkat jaringan, memahami berbagai topologi jaringan, serta menerapkan pemahaman membangun dan memecahkan permasalahan jaringan komputer sederhana.</td></tr></table>`);
+d.querySelector('#b3').onclick=()=>modal(`<h2>Pengembang</h2><div style="display:flex;gap:26px;align-items:center"><img src="fauzi.jpg" style="height:260px;border-radius:18px;border:4px solid var(--sky)"><table class="tb"><tr><td>Nama</td><td>Muhammad Fauzi Utama, S.Kom</td></tr><tr><td>Instansi</td><td>SMAN 10 Pandeglang</td></tr><tr><td>Email</td><td>fauziutama10@gmail.com</td></tr><tr><td>Instagram</td><td>@fauziutama10</td></tr></table></div>`);
+d.querySelector('#b4').onclick=()=>modal(`<h2>Referensi</h2><table class="tb"><tr><td>Aset Gambar</td><td>Dibuat menggunakan ChatGPT</td></tr><tr><td>Aset Suara</td><td>Dibuat menggunakan Claude AI</td></tr><tr><td>Aset Video</td><td>Dibuat menggunakan Claude AI</td></tr><tr><td>Referensi Materi</td><td>Maryono, Dwi. 2026. <i>Cara Mengaplikasikan Informatika</i>. Tiga Serangkai Putra Mandiri</td></tr></table>`)}
+/* ---------- MENU GAME ---------- */
+const ND=[[1,'node_mengenal_jaringan.png',26.5,25.5,19],[2,'node_perangkat_jaringan.png',50,21,15.5],[3,'node_topologi_jaringan.png',76,27,18],[4,'node_simulasi_jaringan.png',31,63.5,21.5],[5,'node_challenge.png',58,68.5,23],[6,'node_final_challenge.png',81.5,58,21]];
+const TX={1:['Hai, '+'@'+'! Sebelum membangun jaringan, kita harus memahami apa itu jaringan komputer. Di misi ini, tonton video pembelajaran sampai selesai dan jawab beberapa pertanyaan. Perhatikan baik-baik, ya! Pengetahuan ini akan membantumu menghadapi misi berikutnya.','TONTON VIDEO',n1],2:['Sekarang kamu akan mengenal perangkat yang membantu jaringan bekerja. Pelajari fungsi masing-masing perangkat, lalu uji kemampuanmu dengan mencocokkan nama perangkat dan kegunaannya.','PELAJARI PERANGKAT',n2],3:['Saatnya merancang jalur koneksi! Topologi jaringan menggambarkan bagaimana perangkat disusun dan dihubungkan. Amati bentuk setiap pola!','JELAJAHI TOPOLOGI',n3],4:['Kamu sudah punya bekal pengetahuan. Sekarang waktunya praktik! Susun perangkat jaringan komputer yang diperlukan, hubungkan menggunakan kabel, lalu lakukan konfigurasi. Amati hasilnya dan pastikan perangkat dapat berkomunikasi. Yuk, buktikan bahwa kamu bisa membangun jaringan!','BUKA SIMULATOR',()=>sim(4)],5:['Wah, ada masalah di jaringan kantor Rhino Net! Beberapa perangkat tidak bisa terhubung. Tugasmu adalah menemukan penyebabnya dan memperbaikinya. Gunakan pengetahuanmu, periksa setiap koneksi, dan selesaikan misi dengan tepat!','TERIMA TANTANGAN',()=>sim(5)],6:['Inilah ujian terakhirmu, @! Kamu akan menghadapi soal-soal tentang materi Jaringan Komputer. Ingat kembali semua yang sudah kamu pelajari. Baca setiap pertanyaan dengan teliti dan pilih jawaban terbaik. Tunjukkan bahwa kamu siap menjadi Penjelajah Jaringan RHINO NET!','MULAI UJIAN AKHIR',n6]};
+const SPK_ON='<svg viewBox="0 0 24 24" width="28" height="28"><path d="M3 9.5v5h3.6L12 19V5L6.6 9.5z" fill="#fff"/><path d="M15.2 9a4.2 4.2 0 0 1 0 6M17.6 6.5a7.6 7.6 0 0 1 0 11" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round"/></svg>',SPK_OFF='<svg viewBox="0 0 24 24" width="28" height="28"><path d="M3 9.5v5h3.6L12 19V5L6.6 9.5z" fill="#fff"/><path d="M15.5 9.5l5 5m0-5l-5 5" stroke="#fff" stroke-width="1.9" stroke-linecap="round"/></svg>';
+function map(){clear();const n=Object.keys(done).length;const d=el(`<div class="scr map"><div class="top"><img src="logo_rhino.png"><div class="pill"><div class="pt"><span class="coin"><svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 3.2l2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.1 5.900-.8z" fill="#9a5b00"/></svg></span><div><small>POIN</small><span id="pts">${pts}</span></div></div><button class="ib" id="hm"><svg viewBox="0 0 24 24" width="28" height="28"><path d="M12 3.2 2.8 11.4h2.6V20h5v-5.6h3.2V20h5v-8.6h2.6z" fill="#fff"/></svg></button><button class="ib" id="sn">${mute?SPK_OFF:SPK_ON}</button></div></div><div class="prog"><div style="display:flex;justify-content:space-between"><b>Progres Game</b><b style="color:var(--yl)">${Math.round(n/6*100)}%</b></div><div class="bar">${[1,2,3,4,5,6].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}</div>${n} dari 6 gedung selesai</div></div>`);S.appendChild(d);
+ND.forEach(([id,img,x,y,w])=>{const lk=id>1&&!done[id-1];const e=el(`<div class="nd ${lk?'lk':''} ${done[id]?'dn':''} ${(!done[id]&&!lk)?'cur':''}" style="left:${x}%;top:${y}%;width:${w}%"><img src="${img}"></div>`);e.onclick=()=>{if(lk)return toast('Selesaikan misi sebelumnya dulu ya!');const t=TX[id];say(t[0].replace('@',name),t[1],t[2])};d.appendChild(e)});
+d.querySelector('#hm').onclick=cover;d.querySelector('#sn').onclick=e=>{mute=!mute;e.currentTarget.innerHTML=mute?SPK_OFF:SPK_ON}}
+/* ---------- KUIS ---------- */
+function matcher(box,pairs,cb,quiet){let sel=null,drag=null;const names=shuf(pairs.map(p=>p[0]));
+box.innerHTML=`<div class="chips" id="pool">${names.map(n=>`<span class="chip" draggable="true">${n}</span>`).join('')}</div>`+pairs.map((p,i)=>`<div class="row"><div class="slot" data-i="${i}"></div><div>${p[1]}</div></div>`).join('')+`<div id="mf"></div><button class="btn o" id="ck">PERIKSA JAWABAN</button>`;
+const pool=box.querySelector('#pool');const put=(t,c)=>{if(!c)return;if(t!==pool&&t.firstChild)pool.appendChild(t.firstChild);t.appendChild(c);if(sel){sel.classList.remove('sel');sel=null}};
+box.querySelectorAll('.chip').forEach(c=>{c.ondragstart=()=>drag=c;c.onclick=e=>{e.stopPropagation();if(sel)sel.classList.remove('sel');sel=c;c.classList.add('sel')}});
+[pool,...box.querySelectorAll('.slot')].forEach(t=>{t.ondragover=e=>e.preventDefault();t.ondrop=e=>{e.preventDefault();put(t,drag)};t.onclick=()=>put(t,sel)});
+box.querySelector('#ck').onclick=function(){if(pool.children.length)return toast('Pasangkan semua nama dulu ya!');let ok=0,fx='';box.querySelectorAll('.slot').forEach(s=>{const i=s.dataset.i,r=s.textContent==pairs[i][0];if(quiet!=2)s.classList.add(r?'g':'r');r?ok++:fx+=`<div>• ${pairs[i][1].slice(0,40)}… → <b>${pairs[i][0]}</b></div>`});this.remove();
+if(quiet)return cb(ok);ok==pairs.length?SFX.ok():SFX.bad();box.querySelector('#mf').innerHTML=`<div class="fb ${ok==pairs.length?'g':'r'}">${ok==pairs.length?`🎉 Luar biasa, ${name}! Semua pasangan benar!`:`Kamu benar ${ok} dari ${pairs.length} ${name}, terus semangat! Koreksi:${fx}`}<br><button class="btn o" id="go">LANJUT</button></div>`;box.querySelector('#go').onclick=()=>cb(ok)}}
+function Q(q,cb,tag=''){const b=modal(`<h3>${tag}</h3><p class="q">${q.q}</p><div id="a"></div><div id="f"></div>`,false),A=b.querySelector('#a'),F=b.querySelector('#f');
+const fin=(ok,cor)=>{if(q.nr){if(ok)P(q.n,q.p);F.innerHTML='<div class="fb" style="background:#1a5ac8">Jawabanmu sudah tersimpan.<br><button class="btn o">LANJUT</button></div>';F.querySelector('button').onclick=()=>{b.close();cb(ok)};return}ok?(P(q.n,q.p),SFX.ok()):SFX.bad();F.innerHTML=`<div class="fb ${ok?'g':'r'}">${ok?`🎉 Hebat, ${name}! Jawabanmu benar. `:`Belum tepat, ${name}! Jawaban benar: <b>${cor}</b>. `}${q.e||''}${q.r?`<br><i>🤔 Refleksi: ${q.r}</i>`:''}<br><button class="btn o">LANJUT</button></div>`;F.querySelector('button').onclick=()=>{b.close();cb(ok)}};
+if(q.t=='mc'||q.t=='tf'){const o=q.t=='tf'?['Benar','Salah']:q.o,a=q.t=='tf'?(q.a?0:1):q.a;o.forEach((t,i)=>{const e=el(`<button class="op">${'ABCD'[i]}. ${t}</button>`);e.onclick=()=>{A.querySelectorAll('button').forEach((x,k)=>{x.disabled=1;if(k==a&&!q.nr)x.classList.add('g')});if(q.nr)e.classList.add('sel');else if(i!=a)e.classList.add('r');fin(i==a,o[a])};A.appendChild(e)})}
+else if(q.t=='fill'){A.innerHTML=`<input type="text" placeholder="Ketik jawabanmu"><button class="btn o">JAWAB</button>`;A.querySelector('button').onclick=()=>{const v=A.querySelector('input').value.trim().toLowerCase();if(!v)return;A.querySelector('button').disabled=1;fin(q.a.includes(v),q.a[0])}}
+else{matcher(A,q.pairs,ok=>fin(ok==q.pairs.length,'urutan yang benar sudah ditampilkan'),q.nr?2:1)}}
+function seq(qs,i,end){i<qs.length?Q(qs[i],()=>seq(qs,i+1,end),`Soal ${i+1} dari ${qs.length}`):end()}
+function deck(b,items,render,end,lab){let i=0;const draw=()=>{speechSynthesis.cancel();b.innerHTML=`<button class="x">✕</button><div class="dk">${render(items[i])}</div><div class="nav"><button class="btn" id="pv" ${i?'':'disabled'}>◀</button><span>${i+1} / ${items.length}</span><button class="btn o" id="nx">${i==items.length-1?lab:'▶'}</button></div>`;b.querySelector('.x').onclick=()=>{speechSynthesis.cancel();b.close()};b.querySelector('#pv').onclick=()=>{i--;draw()};b.querySelector('#nx').onclick=()=>i==items.length-1?end():(i++,draw());i3d(b);const sp=b.querySelector('#sp');if(sp)sp.onclick=()=>{if(speechSynthesis.speaking)return speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(items[i].tx);u.lang='id-ID';speechSynthesis.speak(u)}};draw()}
+function i3d(b){const s=b.querySelector('.scene');if(!s)return;const o=s.firstChild;let x=-12,y=25,dn=0,px,py;const set=()=>o.style.transform=`rotateX(${x}deg) rotateY(${y}deg)`;set();
+s.onpointerdown=e=>{dn=1;px=e.clientX;py=e.clientY;s.setPointerCapture(e.pointerId)};s.onpointerup=()=>dn=0;s.onpointermove=e=>{if(!dn)return;y+=(e.clientX-px)*.8;x-=(e.clientY-py)*.8;px=e.clientX;py=e.clientY;set()}}
+/* ---------- NODE 1 ---------- */
+function n1(){const b=modal(`<h2>🌐 Mengenal Jaringan Komputer</h2><video id="v" src="video_mengenal_jaringan_komputer.mp4" preload="auto" controls playsinline controlsList="nodownload noplaybackrate" style="height:400px;width:auto;max-width:100%;border-radius:18px;border:4px solid var(--sky);display:block;margin:auto"></video><p style="text-align:center;margin:10px">Tonton video dan jawab beberapa pertanyaan</p><div style="text-align:center"><button class="btn o" id="fn" disabled>SELESAI MISI</button></div>`);
+b.style.overflow='hidden';const v=b.querySelector('#v');let q1=0,q2=0,a1=0,a2=0;
+const xf=()=>{try{const f=document.fullscreenElement||document.webkitFullscreenElement;if(f){(document.exitFullscreen||document.webkitExitFullscreen).call(document)}else if(v.webkitDisplayingFullscreen&&v.webkitExitFullscreen)v.webkitExitFullscreen()}catch(e){}};
+const ask1=()=>{q1=1;v.pause();xf();Q({n:1,p:25,t:'mc',q:'Di lab komputer sekolahmu ada 20 komputer yang ingin memakai satu printer dan mengakses file tugas yang sama. Mengapa komputer-komputer itu sebaiknya dihubungkan dalam jaringan?',o:['Agar layar tiap komputer tampilannya sama','Agar perangkat dan data dapat dipakai bersama','Agar setiap komputer tidak perlu memakai listrik','Agar komputer tidak perlu menginstal program apa pun'],a:1,e:'Jaringan komputer menghubungkan perangkat agar dapat bertukar data dan berbagi sumber daya. Tanpa jaringan, setiap komputer perlu printer dan salinan file sendiri-sendiri.'},()=>{a1=1;if(v.ended)ask2();else v.play()},'Pertanyaan 1 dari 2')};
+const ask2=()=>{if(q2)return;q2=1;v.pause();xf();Q({n:1,p:25,t:'mc',q:'Sekolah A mengumpulkan tugas dengan flashdisk dari komputer ke komputer. Sekolah B memakai komputer yang saling terhubung dalam jaringan. Mana kesimpulan yang paling tepat?',o:['Sekolah A lebih cepat karena tidak butuh perangkat tambahan','Sekolah B lebih efisien karena data dan sumber daya dapat dibagikan langsung','Keduanya sama saja karena data sama-sama berpindah','Sekolah B tidak bisa berbagi file, hanya bisa berbagi layar'],a:1,e:'Pada jaringan, data berpindah langsung tanpa media perantara, sehingga lebih cepat, rapi, dan mudah dikelola. Flashdisk juga rawan hilang atau membawa virus.'},()=>{a2=1;b.querySelector('#fn').disabled=0},'Pertanyaan 2 dari 2')};
+v.ontimeupdate=()=>{if(!q1&&v.currentTime>=51)ask1()};
+v.onended=()=>{if(!q1)ask1();else if(a1)ask2()};
+b.querySelector('#fn').onclick=()=>{b.close();finish(1)}}
+/* ---------- NODE 2 ---------- */
+const DV=[['Modem','📡','Modem merupakan singkatan dari modulator-demodulator, berfungsi untuk menghubungkan jaringan pengguna dengan layanan internet melalui jaringan penyedia layanan yang didukung.','Rumahmu ingin tersambung ke internet lewat penyedia layanan (ISP).'],['Router','🛜','Router berfungsi untuk meneruskan/menyebarkan paket data antar jaringan berdasarkan informasi alamat IP. Router membantu menentukan jalur yang digunakan agar data dapat mencapai jaringan tujuan.','Paket data dari jaringan sekolah perlu dicarikan jalur menuju jaringan lain berdasarkan alamat IP.'],['Switch','🔀','Switch berfungsi untuk menghubungkan beberapa perangkat dalam jaringan lokal atau LAN.','Komputer-komputer di lab sekolah perlu terhubung dalam satu jaringan lokal (LAN).'],['Server','🗄️','Server merupakan penyedia layanan, data, atau sumber daya bagi perangkat lain dalam jaringan. Ketika komputer meminta file atau membuka aplikasi yang disediakan server, server memproses permintaan tersebut dan memberikan respons.','Siswa membuka file tugas bersama yang disimpan dan dilayani oleh satu perangkat.'],['Kabel Jaringan','🔌','Kabel jaringan merupakan jalur fisik yang membawa sinyal data di antara perangkat. Berbeda dari Wi-Fi yang menggunakan gelombang radio, kabel Ethernet menggunakan media penghantar fisik.','Jalur fisik di antara perangkat yang membawa sinyal data, berbeda dari Wi-Fi.']];
+const DX=[
+['Bayangkan modem sebagai pintu gerbang rumahmu menuju jalan raya internet. Komputer berbicara dengan sinyal digital (angka 0 dan 1), sedangkan jalur penyedia layanan memakai bentuk sinyal lain. Modem menerjemahkannya bolak-balik: <b>modulasi</b> mengubah data menjadi sinyal yang bisa dikirim, <b>demodulasi</b> mengubahnya kembali agar dimengerti komputer.','Modem dari penyedia layanan internet (ISP) di rumahmu. Tanpa modem, jaringan di rumah tidak bisa terhubung ke internet.'],
+['Router seperti petugas lalu lintas atau pos penyortiran paket di persimpangan. Setiap paket data membawa alamat tujuan (alamat IP). Router membaca alamat itu lalu memilih jalur terbaik agar paket sampai ke jaringan yang dituju. Router juga yang menghubungkan jaringan lokal kita dengan jaringan lain, termasuk internet.','Router sekolah menghubungkan jaringan lab komputer ke internet. Saat kamu membuka sebuah situs, permintaanmu melewati router menuju server di luar sekolah, lalu jawabannya dikembalikan ke komputermu.'],
+['Switch seperti stopkontak bercabang untuk data, tetapi lebih pintar. Switch mengenali perangkat apa yang terhubung di setiap portnya, sehingga data dikirim <b>hanya ke perangkat tujuan</b>, bukan ke semua perangkat. Hasilnya jaringan lokal (LAN) lebih cepat dan tidak ramai oleh data yang tidak perlu.','Di lab sekolah, 30 komputer dihubungkan ke switch 24 atau 48 port. Dengan begitu, siswa bisa mengirim file antar komputer dan memakai satu printer bersama.'],
+['Server seperti koki di restoran: komputer lain (disebut <b>client</b>) memesan, lalu server menyiapkan dan menyajikan pesanan itu. Server biasanya menyala terus-menerus, lebih kuat, dan melayani banyak client sekaligus. Satu server bisa menyediakan layanan tertentu, misalnya web, file, atau email.','Saat kamu membuka website sekolah, komputermu (client) meminta halaman ke web server, lalu server mengirimkannya.'],
+['Kabel jaringan seperti jalan raya nyata bagi data. Pada kabel UTP, data dibawa sebagai sinyal listrik. Pada kabel fiber optik, data dibawa sebagai cahaya sehingga sangat cepat dan jangkauannya jauh. Dibanding Wi-Fi, kabel umumnya lebih stabil dan cepat, tetapi kurang fleksibel karena harus dipasang.','Kabel UTP dengan konektor RJ-45 menghubungkan komputer ke switch di lab. Kabel fiber optik dipakai untuk menghubungkan antar gedung atau antar kota yang jaraknya jauh.']];
+let T3;const load3d=()=>T3||(T3=Promise.all([import('three'),import('three/addons/controls/OrbitControls.js'),import('three/addons/geometries/RoundedBoxGeometry.js'),import('three/addons/environments/RoomEnvironment.js')]).then(([T,O,G,E])=>({T,OC:O.OrbitControls,RB:G.RoundedBoxGeometry,RE:E.RoomEnvironment})).catch(e=>{T3=null;throw e}));
+setTimeout(()=>load3d().catch(()=>{}),2500);
+function make3d({T,OC,RB,RE}){
+const cv=document.createElement('canvas'),FL=0,V3=(x,y,z)=>new T.Vector3(x,y,z);
+const R=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+R.setClearColor(0x000000, 0); R.outputColorSpace = T.SRGBColorSpace;R.toneMapping=T.ACESFilmicToneMapping;R.toneMappingExposure=1.1;R.shadowMap.enabled=true;R.shadowMap.type=T.PCFSoftShadowMap;
+const sc=new T.Scene(),cam=new T.PerspectiveCamera(38,2.6,.1,100);
+const ct=new OC(cam,cv);ct.enableDamping=true;ct.dampingFactor=.08;ct.enablePan=false;ct.minDistance=4;ct.maxDistance=15;ct.maxPolarAngle=Math.PI/2-.04;ct.autoRotate=true;ct.autoRotateSpeed=1.6;
+let tm;ct.addEventListener('start',()=>{ct.autoRotate=false;clearTimeout(tm)});ct.addEventListener('end',()=>{tm=setTimeout(()=>ct.autoRotate=true,3000)});
+sc.add(new T.HemisphereLight(0xffffff, 0x444466, 1.5));const key=new T.DirectionalLight(0xffffff, 2.5);key.position.set(5,8,5);key.castShadow=true;key.shadow.mapSize.set(1024,1024);Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-6,near:1,far:25});key.shadow.bias=-.0004;sc.add(key);
+const rim=new T.DirectionalLight(0x38bdf8, 2.0);rim.position.set(-5,3,-5);sc.add(rim);
+const mat=(c,m=.5,r=.4)=>new T.MeshStandardMaterial({color:c,metalness:m,roughness:r});
+const led=(c,i=2.6)=>new T.MeshStandardMaterial({color:c,emissive:c,emissiveIntensity:i,roughness:.4});
+const add=(p,geo,m,x=0,y=0,z=0,sh=true)=>{const o=new T.Mesh(geo,m);o.position.set(x,y,z);if(sh){o.castShadow=true;o.receiveShadow=true}p.add(o);return o};
+const bx=(w,h,d)=>new T.BoxGeometry(w,h,d),rb=(w,h,d,r=.06)=>new RB(w,h,d,4,r),cyl=(a,b,h,s=24)=>new T.CylinderGeometry(a,b,h,s);
+const dot=(g,L,c,x,y,z,r=.05,ph=0,sp=2.5)=>{const m=led(c),o=new T.Mesh(new T.CircleGeometry(r,16),m);o.position.set(x,y,z);g.add(o);L.push({m,ph,sp});return o};
+const blink=(L,t)=>L.forEach(o=>o.m.emissiveIntensity=1.6+1.1*Math.sin(t*o.sp+o.ph));
+const txt=(s,w,h,o={})=>{const c=document.createElement('canvas');c.width=512;c.height=Math.round(512*h/w);const x=c.getContext('2d');x.fillStyle=o.fg||'#fff';x.font=`800 ${Math.round(c.height*.62)}px "Baloo 2",Arial,sans-serif`;x.textBaseline='middle';if(o.al=='l'){x.textAlign='left';x.fillText(s,12,c.height/2+4)}else{x.textAlign='center';x.fillText(s,256,c.height/2+4)}const t=new T.CanvasTexture(c);t.colorSpace=T.SRGBColorSpace;t.anisotropy=4;return new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({map:t,transparent:true}))};
+const tube=(g,pts,r,col)=>{const c=new T.CatmullRomCurve3(pts.map(p=>V3(...p)));const m=new T.Mesh(new T.TubeGeometry(c,Math.max(30,pts.length*12),r,10,false),mat(col,.1,.45));m.castShadow=true;g.add(m);return c};
+const pulses=(g,c,n,col,rev)=>{const ms=[];for(let k=0;k<n;k++){const m=new T.Mesh(new T.SphereGeometry(.115,16,12),led(col,3));g.add(m);ms.push(m)}return t=>ms.forEach((m,k)=>{let u=(t*.2+k/n)%1;if(rev)u=1-u;m.position.copy(c.getPointAt(u))})};
+const plug=col=>{const p=new T.Group(),cm=new T.MeshStandardMaterial({color:0xe6eef9,transparent:true,opacity:.55,roughness:.12,metalness:0});add(p,rb(.34,.26,.5,.04),cm,0,0,0,false);for(let k=0;k<8;k++)add(p,bx(.02,.03,.3),mat(0xf0c04a,1,.25),-.14+k*.04,.13,.06,false);add(p,rb(.3,.24,.46,.05),mat(col,.1,.5),0,0,-.45);return p};
+const plugAt=(g,col,tip,dir)=>{const p=plug(col),d=dir.clone().normalize();p.quaternion.setFromUnitVectors(V3(0,0,1),d);p.position.copy(tip).sub(d.clone().multiplyScalar(.25));g.add(p);return p};
+const sh=new T.Mesh(new T.PlaneGeometry(30,30),new T.ShadowMaterial({opacity:.28}));sh.rotation.x=-Math.PI/2;sh.position.y=.001;sh.receiveShadow=true;sc.add(sh);
+const mkModem=()=>{const g=new T.Group(),L=[];[[-1.2,-.8],[1.2,-.8],[-1.2,.8],[1.2,.8]].forEach(([x,z])=>add(g,cyl(.1,.1,.1,16),mat(0x475569,.1,.7),x,.05,z));add(g,rb(3,.5,2,.08),mat(0xf1f5fb,.1,.35),0,.35,0);add(g,rb(2.9,.05,1.9,.02),mat(0xdbe4f2,.1,.35),0,.62,0);[0xfacc15,0x22c55e,0x22c55e,0x22c55e].forEach((c,k)=>dot(g,L,c,-1.2+k*.3,.35,1.001,.045,k*.5,4));const t=txt('MODEM',1.2,.3,{fg:'#1e6fe0'});t.position.set(.7,.35,1.002);g.add(t);return{g,cy:.35,cam:[4.5,3.5,6],tick:t=>blink(L,t)}};
+const mkRouter=()=>{const g=new T.Group(),r=new T.Group(),L=[];r.position.y=-.25;g.add(r);add(r,rb(3,.35,2,.08),mat(0x1e1e2e,.1,.35),0,.5,0);add(r,rb(2.9,.05,1.9,.02),mat(0x2d2d44,.1,.3),0,.69,0);[[-1.2,-.8],[1.2,-.8],[-1.2,.8],[1.2,.8]].forEach(([x,z])=>add(r,cyl(.12,.12,.1,16),mat(0x1e293b,.1,.8),x,.3,z));[-.9,.9].forEach(x=>{const a=new T.Group();a.position.set(x,.68,-.8);add(a,cyl(.06,.08,1.8,16),mat(0x151520,.1,.4),0,.9,0);add(a,cyl(.07,.07,.15,16),mat(0x050505,.2,.5),0,1.85,0,false);a.rotation.z=x>0?-.12:.12;a.rotation.x=-.15;r.add(a)});[0x22c55e,0x22c55e,0xfacc15,0x38bdf8,0x38bdf8].forEach((c,i)=>{dot(r,L,c,-.8+i*.4,.5,1.001,.05,i*.7,3)});const t=txt('ROUTER',1.5,.38,{fg:'#ffffff'});t.rotation.x=-Math.PI/2;t.position.set(0,.72,.3);r.add(t);const wg=new T.Group();wg.position.set(0,2.35,-.8);g.add(wg);const W=[];for(let i=0;i<3;i++){const m=new T.Mesh(new T.RingGeometry(.15,.22,48),new T.MeshBasicMaterial({color:0x38bdf8,transparent:true,opacity:.8,side:T.DoubleSide}));m.rotation.x=-Math.PI/2;wg.add(m);W.push({m,ph:i*Math.PI*2/3})}return{g,cy:1.5,cam:[4.8,3.5,6.4],tick:t=>{blink(L,t);W.forEach(w=>{const p=(t*1.2+w.ph)%(Math.PI*2),u=p/(Math.PI*2);w.m.scale.setScalar(1+u*5);w.m.material.opacity=Math.max(0,.9-u);w.m.position.y=u*1.5});r.rotation.y = Math.sin(t * 0.3) * 0.05;}}};
+const mkSwitch=()=>{const g=new T.Group(),L=[];add(g,rb(4.5,.8,2,.08),mat(0xc3c7cd,.75,.3),0,.4,0);add(g,rb(4.4,.05,1.9,.02),mat(0xa9aeb6,.75,.3),0,.82,0);for(let k=0;k<8;k++){const x=-1.4+k*.4;add(g,bx(.3,.25,.1),mat(0x1f2937,.2,.8),x,.28,1.01,false);dot(g,L,0xfacc15,x-.05,.54,1.02,.025,k*1.1,2);const actLed=dot(g,L,0x22c55e,x+.05,.54,1.02,.025,k*1.5,5);actLed.userData={act:true}}dot(g,L,0x22c55e,-1.8,.54,1.02,.04,0,2);dot(g,L,0x22c55e,-1.8,.28,1.02,.04,0,2);const t=txt('SWITCH',1.5,.3,{fg:'#0a2a66'});t.rotation.x=-Math.PI/2;t.position.set(0,.85,.3);g.add(t);return{g,cy:.5,cam:[5.5,3.5,6.5],tick:t=>{L.forEach(o=>{if(o.act)o.m.emissiveIntensity=Math.random()>.3?2.5:.5;else blink([o],t)})}}};
+const mkServer=()=>{const g=new T.Group(),L=[];add(g,rb(3,4,3,.1),mat(0x15171b,.3,.45),0,2,0);add(g,rb(2.8,.1,2.8,.02),mat(0x0b0c0f,.3,.4),0,4.05,0);add(g,cyl(.08,.08,4,16),mat(0x2b2f36,.4,.4),-1.55,2,1);add(g,cyl(.08,.08,4,16),mat(0x2b2f36,.4,.4),1.55,2,1);for (let i=0;i<6;i++){const y=3.3-(i*0.55);add(g,rb(2.6,.5,.1,.02),mat(0x272a30,.3,.55),0,y,1.55);const handle=add(g,rb(.15,.2,.05,.01),led(0x38bdf8,1.5),1,y,1.6);L.push({m:handle.material,ph:Math.random()*5,sp:2});const act=dot(g,L,0x22c55e,-1,y,1.61,.03,Math.random()*5,0);act.userData={act:true}}add(g,rb(2.6,.3,.1,.02),mat(0x272a30,.3,.5),0,.15,1.55);return{g,cy:2,cam:[5.5,5,8],tick:t=>{L.forEach(o=>{if(o.act)o.m.emissiveIntensity=Math.random()>.8?2.5:.1;else blink([o],t)})}}};
+const mkCable=()=>{const g=new T.Group(),Y=.15,CB=0x2f7be8;const P=[[1.25,Y,2],[1.35,Y,1],[1.6,Y,-.3],[1,Y,-1.7],[-.3,Y,-2.3],[-1.5,Y,-1.6],[-1.8,Y,-.2],[-1.4,Y,1],[-1.25,Y,2]];const c=tube(g,P,.09,CB),t0=c.getTangentAt(0),t1=c.getTangentAt(1);plugAt(g,CB,V3(P[0][0],Y,P[0][2]).add(t0.clone().multiplyScalar(-1).multiplyScalar(.675+.25)),t0.clone().multiplyScalar(-1));plugAt(g,CB,V3(P[8][0],Y,P[8][2]).add(t1.clone().multiplyScalar(.675+.25)),t1.clone());const pl=pulses(g,c,5,0x7df9ff,false);return{g,cy:.5,cam:[4.4,5.2,6.0],tick:t=>pl(t)}};
+const B=[mkModem,mkRouter,mkSwitch,mkServer,mkCable],M={};let cur=null,raf=0,dead=false;
+const show=i=>{if(cur)sc.remove(cur.g);cur=M[i]||(M[i]=B[i]());cur.g.position.y=FL;sc.add(cur.g);ct.target.set(0,FL+cur.cy,0);cam.position.set(cur.cam[0],FL+cur.cy+cur.cam[1],cur.cam[2]);ct.autoRotate=true;ct.update()};
+const rs=()=>{const h=cv.parentNode;if(!h||!h.clientWidth)return;const k=S.getBoundingClientRect().width/S.offsetWidth||1;R.setPixelRatio(Math.min(2,(window.devicePixelRatio||1)*k));R.setSize(h.clientWidth,h.clientHeight,false);cam.aspect=h.clientWidth/h.clientHeight;cam.updateProjectionMatrix()};
+addEventListener('resize',rs);
+const t0=performance.now();
+const loop=()=>{raf=requestAnimationFrame(loop);if(!cv.isConnected){dispose();return}if(cur)cur.tick((performance.now()-t0)/1000);ct.update();R.render(sc,cam)};
+const dispose=()=>{if(dead)return;dead=true;cancelAnimationFrame(raf);clearTimeout(tm);removeEventListener('resize',rs);ct.dispose();sc.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){[].concat(o.material).forEach(m=>{if(m.map)m.map.dispose();m.dispose()})}});R.dispose();R.forceContextLoss();cv.remove()};
+raf=requestAnimationFrame(loop);return{canvas:cv,fit:rs,show,dispose}}
+
+function n2(){const b=modal('',false);let i=0,V=null,dead=false;const oc=b.close;
+const stop=()=>{dead=true;speechSynthesis.cancel();if(V){V.dispose();V=null}};b.close=()=>{stop();oc()};
+const mount=()=>{const host=b.querySelector('.d3v');if(V){host.appendChild(V.canvas);V.fit();V.show(i);return}host.innerHTML='<div class="d3ld">⏳ Memuat objek 3D...</div>';load3d().then(L=>{if(dead)return;if(!V)V=make3d(L);const h=b.querySelector('.d3v');if(!h)return;h.innerHTML='';h.appendChild(V.canvas);V.fit();V.show(i)}).catch(()=>{if(dead)return;const h=b.querySelector('.d3v');if(h)h.innerHTML=`<div class="d3ld"><div style="font-size:130px;line-height:1.1">${DV[i][1]}</div><div style="font-size:20px">Objek 3D membutuhkan koneksi internet.</div></div>`})};
+const end=()=>{stop();b.innerHTML='<h2>🧩 Cocokkan Perangkat & Fungsinya</h2><p style="margin-bottom:10px;font-size:18px">Seret (atau klik) nama perangkat ke fungsi yang tepat.</p><div id="m"></div>';matcher(b.querySelector('#m'),DV.map(d=>[d[0],d[3]]),ok=>{P(2,ok*10);b.close();finish(2)})};
+const draw=()=>{speechSynthesis.cancel();const d=DV[i],last=i==DV.length-1;b.innerHTML=`<button class="x">✕</button><div class="d3"><div class="d3v"></div><div class="d3t"><h2>${d[0]}</h2></div><button class="ib d3s" id="sp" title="Putar / Stop suara">${SPK_ON}</button><div class="d3h">Seret untuk memutar · Scroll untuk zoom</div></div><p class="d3p">${d[2]}</p><p class="d3x"><b>Contoh:</b> ${DX[i][1]}</p><div class="nav"><button class="btn" id="pv" ${i?'':'disabled'}>◀</button><span>${i+1} / ${DV.length}</span><button class="btn o" id="nx">${last?'UJI KEMAMPUAN ▶':'▶'}</button></div>`;b.querySelector('.x').onclick=()=>b.close();b.querySelector('#pv').onclick=()=>{i--;draw()};b.querySelector('#nx').onclick=()=>last?end():(i++,draw());b.querySelector('#sp').onclick=()=>{if(speechSynthesis.speaking)return speechSynthesis.cancel();const bt=b.querySelector('#sp'),u=new SpeechSynthesisUtterance([d[2],DX[i][1]].join(' ').replace(/<[^>]+>/g,''));u.lang='id-ID';u.onend=u.onerror=()=>bt&&bt.classList.remove('on');bt.classList.add('on');speechSynthesis.speak(u)};mount()};draw()}
+/* ---------- NODE 3 ---------- */
+function topo(t,lab){
+const pc=(x,y,s=.6)=>`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-15" y="-16" width="30" height="21" rx="2.5" fill="#e8eef7"/><rect x="-13" y="-14" width="26" height="17" rx="1.5" fill="#1e6fe0"/><path d="M-13-14H1L-6 3H-13Z" fill="#4f9bff" opacity=".55"/><rect x="-13" y=".5" width="26" height="2.5" fill="#0f4db0"/><rect x="-2.5" y="5" width="5" height="5" fill="#b9c6da"/><rect x="-8.5" y="10" width="17" height="3.2" rx="1.6" fill="#8ea0bb"/></g>`;
+const sw=(x,y,s=.8)=>`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-23" y="-8" width="46" height="16" rx="3" fill="#ff9f1a"/><rect x="-23" y="-8" width="46" height="5" rx="2.5" fill="#ffc15e"/>${[0,1,2,3,4,5,6,7].map(k=>`<rect x="${-18.5+k*5}" y="-1" width="3.6" height="5" rx=".6" fill="#1f2937"/><circle cx="${-16.7+k*5}" cy="-5.5" r=".9" fill="${k%3==2?'#ffd23f':'#22c55e'}"/>`).join('')}</g>`;
+const rt=(x,y,s=.8)=>`<g transform="translate(${x} ${y}) scale(${s})"><line x1="-14" y1="-8" x2="-19" y2="-23" stroke="#e8eef7" stroke-width="2.8" stroke-linecap="round"/><line x1="14" y1="-8" x2="19" y2="-23" stroke="#e8eef7" stroke-width="2.8" stroke-linecap="round"/><rect x="-24" y="-9" width="48" height="19" rx="5" fill="#1e6fe0"/><rect x="-24" y="-9" width="48" height="6.5" rx="3" fill="#4f9bff"/><circle cx="-14" cy="4" r="2.2" fill="#22c55e"/><circle cx="-7" cy="4" r="2.2" fill="#ffd23f"/><circle cx="0" cy="4" r="2.2" fill="#5cc8ff"/><rect x="9" y="1.5" width="11" height="5" rx="1.2" fill="#0a2a66"/></g>`;
+const L={star:[[[50,50],[50,12],[88,38],[74,86],[26,86],[12,38]],[[0,1],[0,2],[0,3],[0,4],[0,5]]],bus:[[[18,28],[40,28],[62,28],[84,28]],[]],ring:[[[50,12],[85,32],[85,70],[50,88],[15,70],[15,32]],[[0,1],[1,2],[2,3],[3,4],[4,5],[5,0]]],mesh:[[[50,10],[90,40],[75,88],[25,88],[10,40]],[[0,1],[0,2],[0,3],[0,4],[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]],tree:[[[50,25],[28,53],[72,53],[12,84],[36,84],[64,84],[88,84]],[[0,1],[0,2],[1,3],[1,4],[2,5],[2,6]]]}[t];
+let o='';
+if(t=='bus'){o+=`<line x1="8" y1="50" x2="92" y2="50" stroke="#ffd23f" stroke-width="3" stroke-linecap="round"/><rect x="3" y="46" width="3.5" height="8" rx="1" fill="#ef4444"/><rect x="93.5" y="46" width="3.5" height="8" rx="1" fill="#ef4444"/>`;[18,40,62,84].forEach((x,i)=>{const y=i%2?74:28;o+=`<line x1="${x}" y1="50" x2="${x}" y2="${y}" stroke="#5cc8ff" stroke-width="2"/>`});if(lab)[0,1].forEach(k=>o+=`<circle r="1.6" fill="#7df9ff"><animateMotion dur="3s" begin="${k*1.5}s" repeatCount="indefinite" path="M8 50L92 50"/></circle>`);[18,40,62,84].forEach((x,i)=>o+=pc(x,i%2?74:28));}
+else{o+=L[1].map(([a,c])=>`<line x1="${L[0][a][0]}" y1="${L[0][a][1]}" x2="${L[0][c][0]}" y2="${L[0][c][1]}" stroke="#5cc8ff" stroke-width="2"/>`).join('');if(lab)o+=L[1].map(([a,c],i)=>`<circle r="1.6" fill="#7df9ff"><animateMotion dur="2.4s" begin="${(i*.37).toFixed(2)}s" repeatCount="indefinite" path="M${L[0][a][0]} ${L[0][a][1]}L${L[0][c][0]} ${L[0][c][1]}"/></circle>`).join('');o+=L[0].map((p,i)=>t=='star'&&i==0?sw(p[0],p[1],.9):t=='tree'&&i==0?rt(p[0],p[1],.8):t=='tree'&&i<3?sw(p[0],p[1],.6):pc(p[0],p[1])).join('');}
+const lg=lab?`<g font-size="4.2" font-family="inherit" font-weight="700" fill="#fff">${pc(6,5,.26)}<text x="12" y="6.6">PC</text>${t=='star'||t=='tree'?sw(8,12.5,.28)+'<text x="16" y="14">Switch</text>':''}${t=='bus'?'<line x1="3" y1="12.5" x2="10" y2="12.5" stroke="#ffd23f" stroke-width="2"/><text x="12" y="14">Backbone</text>':''}</g>`:'';
+return`<svg viewBox="0 0 100 100">${o}</svg>`}
+const TP=[['Star','Setiap perangkat terhubung ke satu perangkat pusat, biasanya switch pada jaringan Ethernet.',['Mudah menambah perangkat','Gangguan satu kabel biasanya hanya memengaruhi perangkat itu','Lebih mudah mencari lokasi gangguan'],['Jika switch pusat rusak, komunikasi perangkat yang bergantung padanya terganggu','Membutuhkan kabel tersendiri dari tiap perangkat ke pusat']],['Bus','Beberapa perangkat berbagi satu jalur komunikasi utama atau backbone.',['Struktur sederhana','Pada implementasi tradisional, kebutuhan kabel utama relatif sedikit'],['Gangguan backbone memengaruhi seluruh jaringan','Penambahan perangkat dan pencarian gangguan lebih sulit','Performa terbatas saat lalu lintas meningkat']],['Ring','Perangkat terhubung membentuk lingkaran, sehingga setiap perangkat berhubungan dengan tetangganya.',['Pola hubungan teratur','Pada implementasi tertentu, akses terkontrol membantu mengatur giliran pengiriman data'],['Gangguan satu sambungan dapat mengganggu ring sederhana','Perubahan susunan dapat membutuhkan konfigurasi ulang']],['Mesh','Perangkat memiliki beberapa jalur ke node lain. Pada full mesh, setiap node terhubung langsung dengan semua node lainnya.',['Memiliki jalur alternatif jika koneksi terputus','Meningkatkan ketahanan jaringan'],['Membutuhkan lebih banyak sambungan dan biaya','Pengelolaan kompleks ketika node bertambah']],['Tree','Perangkat disusun bertingkat atau hierarkis, menyerupai cabang pohon.',['Cocok untuk jaringan yang dibagi beberapa bagian','Memudahkan pengembangan bertahap','Pengelolaan per cabang atau kelompok'],['Gangguan di tingkat atas memengaruhi cabang di bawahnya','Perlu perencanaan dan pengelolaan lebih cermat']]];
+function n3(){const b=modal('',false);const L=a=>a.map(x=>`<li>${x}</li>`).join('');
+deck(b,TP.map(t=>({n:t[0],t})),d=>`<div class="tp">${topo(d.n.toLowerCase(),1)}</div><div><h2>Topologi ${d.n}</h2><p><b>Cara kerja:</b> ${d.t[1]}</p><p style="margin-top:6px"><b style="color:#6dff9a">Kelebihan</b></p><ul>${L(d.t[2])}</ul><p style="margin-top:6px"><b style="color:#ff8a8a">Kekurangan</b></p><ul>${L(d.t[3])}</ul></div>`,()=>{b.innerHTML='<h2>🃏 Memory Card Topologi</h2><p style="margin-bottom:8px;font-size:18px">Pasangkan nama topologi dengan gambarnya.</p><div class="mem" id="mm"></div><div id="mf" style="margin-top:10px"></div>';
+const cs=shuf(TP.flatMap(t=>[{k:t[0],h:t[0]},{k:t[0],h:topo(t[0].toLowerCase())}]));let op=[],mt=0,lk=0;const g=b.querySelector('#mm');
+cs.forEach(c=>{const e=el(`<div class="cd"><div><b>?</b><i>${c.h}</i></div></div>`);e.onclick=()=>{if(lk||e.classList.contains('f'))return;e.classList.add('f');op.push([e,c]);if(op.length<2)return;lk=1;const[[e1,c1],[e2,c2]]=op;op=[];if(c1.k==c2.k){setTimeout(()=>{e1.classList.add('m');e2.classList.add('m');SFX.ok();P(3,10);lk=0;if(++mt==5){b.querySelector('#mf').innerHTML=`<div class="fb g">🎉 Keren, ${name}! Semua pasangan ditemukan!<br><button class="btn o" id="go">SELESAI MISI</button></div>`;b.querySelector('#go').onclick=()=>{b.close();finish(3)}}},500)}else setTimeout(()=>{e1.classList.remove('f');e2.classList.remove('f');SFX.bad();lk=0},900)};g.appendChild(e)})},'MAIN MEMORY CARD ▶')}
+/* ---------- NODE 4 & 5: SIMULATOR ---------- */
+function sim(mode){
+let D=[],Lk=[],tool=null,cab=null,sl=null,uid=0;
+let phase = (mode == 4) ? 1 : 2;
+const getPos = (idx) => {
+    const c = 3;
+    return { x: 150 + (idx % c) * 180, y: 125 + Math.floor(idx / c) * 115 };
+};
+
+if(mode==5){
+    D=[{id:0,t:'sw',x:400,y:240,name:'Switch'},
+       {id:1,t:'pc',x:150,y:110,ip:'192.168.1.10',gw:'192.168.1.1',name:'PC1'},
+       {id:2,t:'pc',x:650,y:110,ip:'192.168.1.11',gw:'192.168.1.1',name:'PC2'},
+       {id:3,t:'pc',x:150,y:370,ip:'192.168.2.12',gw:'192.168.2.1',name:'PC3'},
+       {id:4,t:'pc',x:650,y:370,ip:'192.168.1.10',gw:'192.168.1.1',name:'PC4'},
+       {id:5,t:'rt',x:400,y:105,ip:'192.168.1.1',name:'Router'},
+       {id:6,t:'sv',x:400,y:372,ip:'192.168.1.20',gw:'192.168.1.254',name:'Server'}];
+    Lk=[[0,1],[0,2],[0,4],[0,5],[0,6]];
+    uid=7;
+}
+
+const b=modal(`<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px"><h2 id="sim-ttl" style="margin:0">🖥️ Simulator Jaringan</h2>${mode==4?'<button class="btn o" id="gd">📖 PANDUAN</button>':''}</div><p id="sim-desc" style="font-size:17px;margin-bottom:8px"></p><div class="sim ${mode==4?'L':''}"><svg id="cv" viewBox="0 0 800 480"></svg><div class="side"><div id="tl"></div><div id="cf">Klik perangkat untuk mengatur IP &amp; Gateway.</div><button class="btn o" id="ping">📶 UJI PING</button><div class="log" id="lg">&gt; Terminal siap.</div></div></div>${mode==4?'<div style="text-align:right;margin-top:8px"><button class="btn o" id="startch">🚀 MULAI TANTANGAN</button></div>':''}`);
+
+const cv=b.querySelector('#cv'),lg=b.querySelector('#lg');const log=t=>{lg.innerHTML+=`<div>${t}</div>`;lg.scrollTop=1e5};
+
+// ================= LATAR RUANGAN (LAB KOMPUTER / KANTOR) =================
+const scene = (mode==4) ? 'lab' : 'office';
+const E = s => String(s==null?'':s).replace(/[<>&"]/g,'');
+const SELC = d => !!(tool && cab && cab.id==d.id);
+
+// ================= MODE KABEL / MODE HAPUS =================
+let delMode=false,cabBtn=null,delBtn=null,LG={};
+const syncBtns=()=>{
+    if(cabBtn&&cabBtn.isConnected) cabBtn.textContent='🔌 Mode Kabel: '+(tool?'ON':'OFF');
+    if(delBtn&&delBtn.isConnected) delBtn.textContent='🗑 Hapus Perangkat: '+(delMode?'ON':'OFF');
+    cv.classList.toggle('del',delMode);
+};
+const setCable=on=>{tool=on?true:null;cab=null;if(on)delMode=false;syncBtns();draw()};
+const setDel=on=>{
+    delMode=on;if(on){tool=null;cab=null;log('&gt; Mode hapus aktif. Klik perangkat untuk menghapusnya.')}
+    syncBtns();draw();
+};
+const removeDev=d=>{
+    D=D.filter(x=>x.id!=d.id);
+    Lk=Lk.filter(l=>l[0]!=d.id&&l[1]!=d.id);
+    if(cab&&cab.id==d.id) cab=null;
+    if(sl&&sl.id==d.id){sl=null;b.querySelector('#cf').innerHTML='Klik perangkat untuk mengatur IP &amp; Gateway.'}
+    log(`&gt; ${E(d.name)} dihapus.`);
+    draw();
+};
+const pcName=()=>{let i=1;while(D.some(x=>x.name=='PC'+i))i++;return 'PC'+i};
+const slotPos=()=>{for(let i=0;i<30;i++){const p=getPos(i);if(!D.some(x=>Math.hypot(x.x-p.x,x.y-p.y)<60))return p}return getPos(D.length)};
+
+const SHARED_DEFS = `<defs>
+<linearGradient id="gWl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dcebf9"/><stop offset="1" stop-color="#a5c3e2"/></linearGradient>
+<linearGradient id="gWo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6ebf1"/><stop offset="1" stop-color="#bcc8d6"/></linearGradient>
+<linearGradient id="gFl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b9ab0"/><stop offset="1" stop-color="#47556c"/></linearGradient>
+<linearGradient id="gFo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#55688a"/><stop offset="1" stop-color="#2b374c"/></linearGradient>
+<linearGradient id="gSk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5aaeff"/><stop offset="1" stop-color="#dff3ff"/></linearGradient>
+<linearGradient id="gLc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".38"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<radialGradient id="gVg" cx="400" cy="250" r="570" gradientUnits="userSpaceOnUse"><stop offset=".5" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/></radialGradient>
+<radialGradient id="gPool" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+<linearGradient id="gDkL" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1f5f9"/><stop offset="1" stop-color="#c3cedb"/></linearGradient>
+<linearGradient id="gDkO" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c58d55"/><stop offset="1" stop-color="#99683a"/></linearGradient>
+<linearGradient id="gScr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient>
+<linearGradient id="gDev" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#475569"/><stop offset="1" stop-color="#1e293b"/></linearGradient>
+<linearGradient id="gRack" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1e293b"/><stop offset=".5" stop-color="#3b4a60"/><stop offset="1" stop-color="#1e293b"/></linearGradient>
+</defs>`;
+
+// lantai berperspektif (garis ubin menuju titik hilang)
+const floorTiles = c => {
+    let s='';
+    for(let x=-1500;x<=2300;x+=60){ s+=`<line x1="${x}" y1="150" x2="${400+(x-400)*2.875}" y2="900" stroke="${c}" stroke-width="1.4"/>`; }
+    [157,166,178,193,213,239,273,317,375,452,555,690].forEach(y=>{ s+=`<line x1="-1000" y1="${y}" x2="1800" y2="${y}" stroke="${c}" stroke-width="1.4"/>`; });
+    return s;
+};
+const plant = (x,y,s=1) => `<g transform="translate(${x},${y}) scale(${s})">
+<ellipse cx="0" cy="30" rx="22" ry="6" fill="#000" opacity=".3"/>
+<path d="M-16 4 L16 4 L12 30 L-12 30 Z" fill="#b45309"/><rect x="-18" y="0" width="36" height="6" rx="2" fill="#d97706"/>
+<ellipse cx="-12" cy="-12" rx="7" ry="16" fill="#16a34a" transform="rotate(-25 -12 -12)"/>
+<ellipse cx="12" cy="-12" rx="7" ry="16" fill="#15803d" transform="rotate(25 12 -12)"/>
+<ellipse cx="0" cy="-18" rx="7" ry="19" fill="#22c55e"/></g>`;
+const ceilingLights = `<g>
+<rect x="110" y="-4" width="200" height="10" rx="3" fill="#fff"/><rect x="490" y="-4" width="200" height="10" rx="3" fill="#fff"/>
+<polygon points="110,6 310,6 390,150 30,150" fill="url(#gLc)" opacity=".55"/>
+<polygon points="490,6 690,6 770,150 410,150" fill="url(#gLc)" opacity=".55"/></g>`;
+const floorPools = `<ellipse cx="200" cy="300" rx="230" ry="70" fill="url(#gPool)"/><ellipse cx="600" cy="300" rx="230" ry="70" fill="url(#gPool)"/>`;
+
+const bgLab = () => `
+<rect x="-1000" y="-500" width="2800" height="650" fill="url(#gWl)"/>
+<rect x="-1000" y="104" width="2800" height="46" fill="#34588a"/><rect x="-1000" y="102" width="2800" height="4" fill="#e8f1fa"/>
+${[0,1,2,3,4,5,6,7].map(i=>`<line x1="${i*100}" y1="106" x2="${i*100}" y2="150" stroke="#2a4a77" stroke-width="2"/>`).join('')}
+${ceilingLights}
+<!-- jendela -->
+<rect x="22" y="14" width="128" height="90" rx="4" fill="#eef3f9" stroke="#8aa4c0" stroke-width="3"/>
+<rect x="29" y="21" width="114" height="76" fill="url(#gSk)"/>
+<g fill="#5f82ad" opacity=".8"><rect x="34" y="62" width="16" height="35"/><rect x="54" y="48" width="20" height="49"/><rect x="78" y="66" width="14" height="31"/><rect x="96" y="54" width="22" height="43"/><rect x="122" y="68" width="18" height="29"/></g>
+<g fill="#f7fbff" opacity=".92">${[0,1,2,3,4].map(i=>`<rect x="29" y="${23+i*7}" width="114" height="4.5"/>`).join('')}</g>
+<line x1="86" y1="21" x2="86" y2="97" stroke="#eef3f9" stroke-width="4"/>
+<!-- jam dinding -->
+<circle cx="574" cy="46" r="20" fill="#fff" stroke="#334155" stroke-width="4"/>
+<line x1="574" y1="46" x2="574" y2="33" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round"/><line x1="574" y1="46" x2="583" y2="50" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round"/><line x1="574" y1="46" x2="574" y2="30" stroke="#ef4444" stroke-width="1"/><circle cx="574" cy="46" r="2" fill="#0f172a"/>
+<!-- plakat nama lab -->
+<rect x="602" y="30" width="92" height="28" rx="6" fill="#0f2a5c" stroke="#7cc4ff" stroke-width="1.5"/>
+<text x="648" y="48" fill="#ffd23f" font-size="11" font-weight="800" text-anchor="middle">LAB KOMPUTER</text>
+<!-- pintu -->
+<rect x="706" y="6" width="76" height="144" rx="3" fill="#8fa3bd" stroke="#5b708c" stroke-width="3"/>
+<rect x="718" y="20" width="52" height="56" rx="2" fill="#bfe3ff" opacity=".85"/><line x1="744" y1="20" x2="744" y2="76" stroke="#8fa3bd" stroke-width="3"/>
+<circle cx="716" cy="100" r="4" fill="#e2e8f0"/>
+<rect x="686" y="102" width="12" height="30" rx="2" fill="#dc2626"/><rect x="689" y="98" width="6" height="5" fill="#111827"/>
+<rect x="-1000" y="150" width="2800" height="6" fill="#2b3c57"/>
+<!-- lantai -->
+<rect x="-1000" y="156" width="2800" height="800" fill="url(#gFl)"/>
+${floorTiles('rgba(255,255,255,.10)')}
+${floorPools}
+<rect x="-1000" y="156" width="2800" height="5" fill="#000" opacity=".18"/>
+${plant(770,420,1.2)}
+<g transform="translate(36,430)"><ellipse cx="0" cy="26" rx="20" ry="5" fill="#000" opacity=".3"/><path d="M-14 -4 L14 -4 L11 26 L-11 26 Z" fill="#475569"/><rect x="-16" y="-8" width="32" height="6" rx="2" fill="#64748b"/></g>
+<rect x="-1000" y="-500" width="2800" height="1500" fill="url(#gVg)"/>`;
+
+const bgOffice = () => `
+<rect x="-1000" y="-500" width="2800" height="650" fill="url(#gWo)"/>
+<rect x="-1000" y="98" width="2800" height="8" fill="#f97316"/><rect x="-1000" y="106" width="2800" height="44" fill="#6b7f99"/>
+${[0,1,2,3,4,5,6,7].map(i=>`<line x1="${i*100}" y1="106" x2="${i*100}" y2="150" stroke="#586b85" stroke-width="2"/>`).join('')}
+${ceilingLights}
+<!-- jendela panorama kota -->
+<rect x="26" y="12" width="236" height="82" rx="4" fill="#f1f5f9" stroke="#8a9bb0" stroke-width="3"/>
+<rect x="32" y="18" width="224" height="70" fill="url(#gSk)"/>
+<g fill="#4f7099" opacity=".85"><rect x="36" y="52" width="22" height="36"/><rect x="62" y="36" width="26" height="52"/><rect x="92" y="58" width="18" height="30"/><rect x="114" y="30" width="28" height="58"/><rect x="146" y="48" width="22" height="40"/><rect x="172" y="40" width="26" height="48"/><rect x="202" y="56" width="20" height="32"/><rect x="226" y="44" width="26" height="44"/></g>
+<g fill="#fde68a" opacity=".9">${[[66,42],[72,42],[66,52],[118,36],[126,36],[118,46],[126,56],[176,46],[184,46],[176,58],[230,50],[240,50],[230,62]].map(p=>`<rect x="${p[0]}" y="${p[1]}" width="4" height="5"/>`).join('')}</g>
+<line x1="108" y1="18" x2="108" y2="88" stroke="#f1f5f9" stroke-width="4"/><line x1="182" y1="18" x2="182" y2="88" stroke="#f1f5f9" stroke-width="4"/>
+<path d="M32 18 L256 18" stroke="#fff" stroke-width="2" opacity=".6"/>
+<!-- logo perusahaan -->
+<rect x="318" y="6" width="170" height="38" rx="9" fill="#0f2a5c" stroke="#7cc4ff" stroke-width="2"/>
+<circle cx="344" cy="25" r="11" fill="#f97316"/><text x="344" y="30" fill="#fff" font-size="13" font-weight="800" text-anchor="middle">R</text>
+<text x="410" y="24" fill="#ffd23f" font-size="14" font-weight="800" text-anchor="middle">RHINO NET</text>
+<text x="410" y="37" fill="#bfe3ff" font-size="8" text-anchor="middle">Kantor Jaringan</text>
+<!-- jam -->
+<circle cx="536" cy="46" r="19" fill="#fff" stroke="#1e293b" stroke-width="4"/>
+<line x1="536" y1="46" x2="536" y2="34" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round"/><line x1="536" y1="46" x2="546" y2="48" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round"/><circle cx="536" cy="46" r="2" fill="#0f172a"/>
+<!-- papan tiket gangguan -->
+<rect x="578" y="12" width="162" height="82" rx="4" fill="#a16207" stroke="#713f12" stroke-width="3"/>
+<rect x="583" y="17" width="152" height="72" fill="#d6a05b"/>
+<text x="659" y="30" fill="#3b1d06" font-size="10" font-weight="800" text-anchor="middle">TIKET GANGGUAN</text>
+<rect x="590" y="38" width="40" height="36" fill="#fde047" transform="rotate(-3 610 56)"/><text x="595" y="52" fill="#713f12" font-size="7" transform="rotate(-3 610 56)">PC tidak</text><text x="595" y="61" fill="#713f12" font-size="7" transform="rotate(-3 610 56)">bisa ping</text>
+<rect x="638" y="40" width="40" height="36" fill="#fda4af" transform="rotate(2 658 58)"/><text x="643" y="54" fill="#7f1d1d" font-size="7" transform="rotate(2 658 58)">IP ganda?</text><text x="643" y="63" fill="#7f1d1d" font-size="7" transform="rotate(2 658 58)">Cek!</text>
+<rect x="686" y="38" width="40" height="36" fill="#86efac" transform="rotate(-2 706 56)"/><text x="690" y="52" fill="#14532d" font-size="7" transform="rotate(-2 706 56)">Gateway</text><text x="690" y="61" fill="#14532d" font-size="7" transform="rotate(-2 706 56)">salah?</text>
+<circle cx="610" cy="40" r="2.5" fill="#dc2626"/><circle cx="658" cy="42" r="2.5" fill="#2563eb"/><circle cx="706" cy="40" r="2.5" fill="#dc2626"/>
+<!-- lemari arsip & dispenser -->
+<rect x="10" y="78" width="38" height="72" rx="3" fill="#94a3b8" stroke="#64748b" stroke-width="2"/>
+<rect x="14" y="84" width="30" height="20" rx="2" fill="#a9b7c8"/><rect x="14" y="108" width="30" height="20" rx="2" fill="#a9b7c8"/><rect x="25" y="92" width="8" height="3" fill="#475569"/><rect x="25" y="116" width="8" height="3" fill="#475569"/>
+<g transform="translate(766,110)"><rect x="-14" y="-8" width="28" height="46" rx="4" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/><rect x="-10" y="-34" width="20" height="28" rx="8" fill="#7dd3fc" opacity=".8"/><rect x="-5" y="6" width="10" height="5" fill="#3b82f6"/><rect x="-5" y="14" width="10" height="5" fill="#ef4444"/></g>
+<rect x="-1000" y="150" width="2800" height="6" fill="#2b3c57"/>
+<!-- lantai karpet -->
+<rect x="-1000" y="156" width="2800" height="800" fill="url(#gFo)"/>
+${floorTiles('rgba(255,255,255,.07)')}
+<rect x="190" y="200" width="420" height="230" rx="24" fill="#6d28d9" opacity=".12"/><rect x="204" y="214" width="392" height="202" rx="16" fill="none" stroke="#fff" stroke-opacity=".10" stroke-width="3" stroke-dasharray="10 8"/>
+${floorPools}
+${plant(36,425,1.2)}${plant(768,425,1.2)}
+<rect x="-1000" y="-500" width="2800" height="1500" fill="url(#gVg)"/>`;
+
+cv.innerHTML = SHARED_DEFS + `<g id="bg" pointer-events="none">${scene=='lab'?bgLab():bgOffice()}</g><g id="fg"></g><g id="pk" pointer-events="none"></g>`;
+
+// ================= PERANGKAT =================
+const pill = (y,t1,t2,c2='#38bdf8') => `<g><rect x="-46" y="${y}" width="92" height="28" rx="9" fill="#071530" opacity=".92" stroke="${c2}" stroke-opacity=".7"/><text x="0" y="${y+12}" fill="#e2e8f0" font-size="11" font-weight="bold" text-anchor="middle">${E(t1)}</text><text x="0" y="${y+24}" fill="${c2}" font-size="11" font-weight="bold" text-anchor="middle">${E(t2)}</text></g>`;
+const selGlow = (d,cy,rx,ry) => SELC(d) ? `<ellipse cx="0" cy="${cy}" rx="${rx}" ry="${ry}" fill="#ff9f1a" opacity=".28"/><ellipse cx="0" cy="${cy}" rx="${rx}" ry="${ry}" fill="none" stroke="#ff9f1a" stroke-width="2" stroke-dasharray="6 4"/>` : '';
+const nLinks = d => Lk.filter(l=>l[0]==d.id||l[1]==d.id).length;
+
+const monitor = d => {
+    const sc = SELC(d) ? '#ff9f1a' : '#0b1220';
+    const screen = d.ip
+      ? `<rect x="-27" y="-37" width="54" height="37" rx="2" fill="#06202c"/><text x="-24" y="-27" fill="#4ade80" font-size="5" font-family="monospace">C:\\&gt; ipconfig</text><text x="-24" y="-19" fill="#a7f3d0" font-size="5" font-family="monospace">${E(d.ip)}</text><text x="-24" y="-11" fill="#4ade80" font-size="5" font-family="monospace">C:\\&gt; _</text>`
+      : `<rect x="-27" y="-37" width="54" height="37" rx="2" fill="url(#gScr)"/><circle cx="-14" cy="-22" r="5" fill="#fff" opacity=".25"/><rect x="-27" y="-6" width="54" height="6" fill="#0b2a5a" opacity=".85"/><rect x="-25" y="-4.5" width="5" height="3" rx="1" fill="#7dd3fc"/>`;
+    return `<rect x="-4" y="3" width="8" height="9" fill="#374151"/><ellipse cx="0" cy="12" rx="15" ry="3.5" fill="#1f2937"/>
+<rect x="-31" y="-41" width="62" height="45" rx="4" fill="#111827" stroke="${sc}" stroke-width="${SELC(d)?4:2}"/>${screen}
+<circle cx="25" cy="1.4" r="1.2" fill="#22c55e"><animate attributeName="opacity" values="1;.3;1" dur="2.4s" repeatCount="indefinite"/></circle>
+<rect x="-27" y="-37" width="54" height="10" rx="2" fill="#fff" opacity=".06"/>`;
+};
+const keyboard = `<path d="M-20 18 L20 18 L24 25 L-24 25 Z" fill="#1f2937" stroke="#0f172a"/><line x1="-18" y1="20.2" x2="18" y2="20.2" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="2 1.4"/><line x1="-19" y1="22.6" x2="19" y2="22.6" stroke="#9ca3af" stroke-width="1.2" stroke-dasharray="2 1.4"/><ellipse cx="33" cy="21" rx="3.6" ry="2.6" fill="#e5e7eb" stroke="#64748b"/>`;
+
+const drawPC = d => {
+    const lab = scene=='lab';
+    const desk = lab
+      ? `<ellipse cx="0" cy="62" rx="68" ry="9" fill="#000" opacity=".35"/>
+<rect x="-54" y="34" width="5" height="26" fill="#64748b"/><rect x="49" y="34" width="5" height="26" fill="#64748b"/><rect x="-50" y="48" width="100" height="3" fill="#7b8aa0"/>
+<path d="M-48 8 L48 8 L58 28 L-58 28 Z" fill="url(#gDkL)" stroke="#8798ad"/><rect x="-58" y="28" width="116" height="6" rx="1" fill="#9fb0c4"/><rect x="-58" y="28" width="116" height="2" fill="#2563eb"/>
+<g transform="translate(70,0)"><rect x="-9" y="8" width="18" height="50" rx="2" fill="#1f2937" stroke="#475569"/><rect x="-6" y="14" width="12" height="3" fill="#0f172a"/><circle cx="0" cy="26" r="2.4" fill="#22c55e"><animate attributeName="opacity" values="1;.35;1" dur="1.8s" repeatCount="indefinite"/></circle><g stroke="#475569" stroke-width="1">${[0,1,2,3,4].map(i=>`<line x1="-6" y1="${36+i*4}" x2="6" y2="${36+i*4}"/>`).join('')}</g></g>`
+      : `<ellipse cx="0" cy="62" rx="68" ry="9" fill="#000" opacity=".35"/>
+<rect x="-56" y="28" width="112" height="32" rx="2" fill="#8a5a2f" stroke="#5b3a1c"/><rect x="-50" y="34" width="50" height="24" fill="#2e2012" opacity=".65"/><rect x="6" y="34" width="44" height="11" rx="1" fill="#7a4d27" stroke="#5b3a1c"/><rect x="6" y="47" width="44" height="11" rx="1" fill="#7a4d27" stroke="#5b3a1c"/><rect x="22" y="38" width="12" height="2.5" rx="1" fill="#e5c07b"/><rect x="22" y="51" width="12" height="2.5" rx="1" fill="#e5c07b"/>
+<path d="M-48 8 L48 8 L58 28 L-58 28 Z" fill="url(#gDkO)" stroke="#6b4423"/>
+<rect x="-50" y="11" width="9" height="8" rx="1.5" fill="#fff" stroke="#94a3b8"/><path d="M-41 13 q4 0 0 4" fill="none" stroke="#94a3b8" stroke-width="1.4"/><rect x="-49" y="11" width="7" height="2" fill="#92400e"/>
+<rect x="40" y="14" width="14" height="7" fill="#fff" stroke="#94a3b8"/><rect x="41" y="11" width="13" height="4" fill="#e2e8f0" stroke="#94a3b8"/>`;
+    return `<g transform="translate(${d.x},${d.y})" class="nd-sim" data-id="${d.id}" style="cursor:grab">
+${selGlow(d,42,76,26)}${desk}${monitor(d)}${keyboard}${pill(54,d.ip||'IP: -',d.name)}</g>`;
+};
+
+const drawSwitch = d => {
+    const n = nLinks(d), sc = SELC(d) ? '#ff9f1a' : '#0f172a', sw = SELC(d) ? 4 : 2;
+    return `<g transform="translate(${d.x},${d.y})" class="nd-sim" data-id="${d.id}" style="cursor:grab">
+<g transform="scale(.75)">${selGlow(d,14,86,24)}
+<ellipse cx="0" cy="32" rx="84" ry="7" fill="#000" opacity=".35"/>
+<rect x="-78" y="24" width="156" height="6" rx="2" fill="#64748b"/><rect x="-70" y="30" width="6" height="10" fill="#475569"/><rect x="64" y="30" width="6" height="10" fill="#475569"/>
+<rect x="-74" y="-20" width="8" height="42" rx="2" fill="#94a3b8"/><rect x="66" y="-20" width="8" height="42" rx="2" fill="#94a3b8"/>
+<circle cx="-70" cy="-12" r="1.8" fill="#334155"/><circle cx="-70" cy="14" r="1.8" fill="#334155"/><circle cx="70" cy="-12" r="1.8" fill="#334155"/><circle cx="70" cy="14" r="1.8" fill="#334155"/>
+<rect x="-66" y="-22" width="132" height="46" rx="6" fill="url(#gDev)" stroke="${sc}" stroke-width="${sw}"/>
+<text x="-58" y="-9" fill="#7dd3fc" font-size="7" font-weight="bold">RHINO SWITCH 8P</text>
+${[0,1,2,3,4,5,6,7].map(i=>{const on=i<n;return `<rect x="${-56+i*14}" y="2" width="11" height="12" rx="1.5" fill="#050b16" stroke="#475569"/><rect x="${-54+i*14}" y="9" width="7" height="3" fill="#a16207"/><circle cx="${-50.5+i*14}" cy="-2" r="2.1" fill="${on?'#22c55e':'#1f2937'}">${on?`<animate attributeName="opacity" values="1;.25;1" dur="${(0.9+i*0.17).toFixed(2)}s" repeatCount="indefinite"/>`:''}</circle>`}).join('')}
+</g>${pill(32,'SWITCH',n+' kabel','#a7f3d0')}</g>`;
+};
+
+const drawRouter = d => {
+    const n = nLinks(d), sc = SELC(d) ? '#ff9f1a' : '#0f172a', sw = SELC(d) ? 4 : 2;
+    return `<g transform="translate(${d.x},${d.y})" class="nd-sim" data-id="${d.id}" style="cursor:grab">
+<g transform="scale(.75)">${selGlow(d,10,66,22)}
+<ellipse cx="0" cy="24" rx="58" ry="7" fill="#000" opacity=".35"/>
+<line x1="-30" y1="-14" x2="-40" y2="-48" stroke="#1f2937" stroke-width="5" stroke-linecap="round"/><line x1="30" y1="-14" x2="40" y2="-48" stroke="#1f2937" stroke-width="5" stroke-linecap="round"/>
+<circle cx="-40" cy="-49" r="3.5" fill="#38bdf8"/><circle cx="40" cy="-49" r="3.5" fill="#38bdf8"/>
+<rect x="-54" y="-18" width="108" height="40" rx="9" fill="url(#gDev)" stroke="${sc}" stroke-width="${sw}"/>
+<rect x="-54" y="-18" width="108" height="9" rx="6" fill="#fff" opacity=".08"/>
+${[0,1,2,3].map(i=>`<circle cx="${-34+i*13}" cy="-3" r="3" fill="${['#22c55e','#38bdf8','#22c55e','#f59e0b'][i]}"><animate attributeName="opacity" values="1;.3;1" dur="${(1+i*0.4).toFixed(1)}s" repeatCount="indefinite"/></circle>`).join('')}
+<rect x="18" y="-8" width="28" height="12" rx="2" fill="#050b16" stroke="#475569"/><rect x="21" y="0" width="22" height="3" fill="#a16207"/>
+<text x="0" y="15" fill="#7dd3fc" font-size="7" font-weight="bold" text-anchor="middle">RHINO ROUTER</text>
+</g>${pill(22,d.ip||'IP: -','ROUTER','#fdba74')}</g>`;
+};
+
+const drawServer = d => {
+    const n = nLinks(d), sc = SELC(d) ? '#ff9f1a' : '#0f172a', sw = SELC(d) ? 4 : 2;
+    return `<g transform="translate(${d.x},${d.y})" class="nd-sim" data-id="${d.id}" style="cursor:grab">
+<g transform="scale(1.3)">${selGlow(d,46,52,18)}
+<ellipse cx="0" cy="50" rx="48" ry="8" fill="#000" opacity=".4"/>
+<rect x="-30" y="44" width="8" height="6" fill="#0f172a"/><rect x="22" y="44" width="8" height="6" fill="#0f172a"/>
+<rect x="-38" y="-52" width="76" height="98" rx="5" fill="url(#gRack)" stroke="${sc}" stroke-width="${sw}"/>
+${[0,1,2,3].map(i=>`<rect x="-31" y="${-45+i*22}" width="62" height="18" rx="2" fill="#0b1220" stroke="#475569"/><g stroke="#334155" stroke-width="1">${[0,1,2,3,4,5].map(k=>`<line x1="${-10+k*6}" y1="${-41+i*22}" x2="${-10+k*6}" y2="${-31+i*22}"/>`).join('')}</g><circle cx="-24" cy="${-36+i*22}" r="2.2" fill="${i==3?'#f59e0b':'#22c55e'}"><animate attributeName="opacity" values="1;.2;1" dur="${(0.7+i*0.35).toFixed(2)}s" repeatCount="indefinite"/></circle><rect x="-30" y="${-31+i*22}" width="10" height="2" fill="#38bdf8" opacity=".7"/>`).join('')}
+</g>${pill(66,d.ip||'IP: -','SERVER','#c4b5fd')}</g>`;
+};
+
+// ---- jalur kabel: lurus menempel lantai/tembok, siku rapi ----
+const ANC = d => d.t=='pc'?{t:-18,b:58,hw:58} : d.t=='sw'?{t:-17,b:30,hw:56} : d.t=='rt'?{t:-14,b:17,hw:41} : {t:-68,b:60,hw:50};
+function computeLinks(){
+    const G={}, groups={};
+    Lk.forEach(([a,c])=>{
+        const A=D.find(x=>x.id==a),B=D.find(x=>x.id==c); if(!A||!B) return;
+        let h=B,o=A; if(A.t=='sw'&&B.t!='sw'){h=A;o=B}
+        const ha=ANC(h);
+        let cls; if(Math.abs(o.x-h.x)<=ha.hw+8) cls=o.y<h.y?'T':'B'; else cls=o.x<h.x?'L':'R';
+        const k=h.id+cls; (groups[k]=groups[k]||[]).push({o,h,cls,key:Math.min(a,c)+'-'+Math.max(a,c)});
+    });
+    Object.values(groups).forEach(arr=>{
+        const cls=arr[0].cls, n=arr.length;
+        arr.sort((p,q)=>(cls=='T'||cls=='B')?p.o.x-q.o.x:p.o.y-q.o.y);
+        arr.forEach((it,i)=>{
+            const {o,h}=it, ao=ANC(o), ah=ANC(h), off=(i-(n-1)/2)*(cls=='T'||cls=='B'?8:5);
+            const hubAbove=h.y<o.y;
+            const oy = hubAbove ? o.y+ao.t : o.y+ao.b;
+            let pts;
+            if(cls=='T'||cls=='B'){
+                const ey = cls=='T' ? h.y+ah.t : h.y+ah.b, ym=(oy+ey)/2;
+                pts=[{x:o.x,y:oy},{x:o.x,y:ym},{x:h.x+off,y:ym},{x:h.x+off,y:ey}];
+            } else {
+                const dir=cls=='L'?-1:1, ly=h.y+2+off, ex=h.x-dir*0;
+                const sameRow=Math.abs(o.y-h.y)<24;
+                const sx=sameRow ? o.x-dir*ao.hw*0.6 : o.x, sy=sameRow ? o.y+14 : oy;
+                pts=[{x:sx,y:sy},{x:sx,y:ly},{x:h.x+dir*ah.hw,y:ly}];
+            }
+            G[it.key]={pts,first:o.id};
+        });
+    });
+    return G;
+}
+const roundPath=(pts,r=10)=>{
+    const P=pts.filter((p,i)=>i==0||Math.hypot(p.x-pts[i-1].x,p.y-pts[i-1].y)>0.5);
+    if(P.length<2) return '';
+    let d=`M${P[0].x} ${P[0].y}`;
+    for(let i=1;i<P.length-1;i++){
+        const p0=P[i-1],p1=P[i],p2=P[i+1];
+        const d1=Math.hypot(p1.x-p0.x,p1.y-p0.y),d2=Math.hypot(p2.x-p1.x,p2.y-p1.y),rr=Math.min(r,d1/2,d2/2);
+        const ax=p1.x-(p1.x-p0.x)/d1*rr,ay=p1.y-(p1.y-p0.y)/d1*rr,bx=p1.x+(p2.x-p1.x)/d2*rr,by=p1.y+(p2.y-p1.y)/d2*rr;
+        d+=` L${ax} ${ay} Q${p1.x} ${p1.y} ${bx} ${by}`;
+    }
+    const L=P[P.length-1]; return d+` L${L.x} ${L.y}`;
+};
+const polyPt=(pts,u)=>{
+    let tot=0;const seg=[];for(let i=1;i<pts.length;i++){const l=Math.hypot(pts[i].x-pts[i-1].x,pts[i].y-pts[i-1].y);seg.push(l);tot+=l}
+    let t=Math.max(0,Math.min(1,u))*tot;
+    for(let i=0;i<seg.length;i++){ if(t<=seg[i]||i==seg.length-1){const f=seg[i]?t/seg[i]:0;return{x:pts[i].x+(pts[i+1].x-pts[i].x)*f,y:pts[i].y+(pts[i+1].y-pts[i].y)*f}} t-=seg[i]; }
+    return pts[0];
+};
+const linkPt=(a,b,u)=>{
+    const g=LG[Math.min(a.id,b.id)+'-'+Math.max(a.id,b.id)]; if(!g) return {x:a.x,y:a.y};
+    return polyPt(g.pts, g.first==a.id?u:1-u);
+};
+const cableSvg = pts => {
+    const d=roundPath(pts); if(!d) return '';
+    const f=pts[0],l=pts[pts.length-1];
+    return `<path d="${d}" transform="translate(0,2.5)" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="${d}" fill="none" stroke="#1d4ed8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="${d}" fill="none" stroke="#93c5fd" stroke-width="1" stroke-linecap="round" opacity=".65" transform="translate(0,-1)"/>
+<path d="${d}" fill="none" stroke="#cbd5e1" stroke-width="5.5" stroke-linecap="butt" stroke-dasharray="2 46" opacity=".8"/>
+<circle cx="${l.x}" cy="${l.y}" r="3.6" fill="#fbbf24" stroke="#92400e"/><circle cx="${f.x}" cy="${f.y}" r="3" fill="#fbbf24" stroke="#92400e"/>`;
+};
+
+let isDragging = false, dragNode = null, startX = 0, startY = 0, offsetX = 0, offsetY = 0;
+
+const getMousePos = (evt) => {const p=cv.createSVGPoint();p.x=evt.clientX;p.y=evt.clientY;const q=p.matrixTransform(cv.getScreenCTM().inverse());return {x:q.x,y:q.y}};
+
+cv.addEventListener('pointerdown', e => {
+    const target = e.target.closest('.nd-sim');
+    if (!target) return;
+    const id = target.dataset.id;
+    dragNode = D.find(x => x.id == id);
+    if (!dragNode) return;
+
+    const pos = getMousePos(e);
+    offsetX = dragNode.x - pos.x;
+    offsetY = dragNode.y - pos.y;
+    
+    startX = e.clientX; startY = e.clientY;
+    isDragging = false;
+    cv.setPointerCapture(e.pointerId);
+});
+
+cv.addEventListener('pointermove', e => {
+    if (!dragNode) return;
+    const pos = getMousePos(e);
+    
+    if (Math.hypot(e.clientX - startX, e.clientY - startY) > 5) {
+        isDragging = true;
+    }
+    
+    if (isDragging) {
+        dragNode.x = pos.x + offsetX;
+        dragNode.y = pos.y + offsetY;
+        draw();
+    }
+});
+
+cv.addEventListener('pointerup', e => {
+    if (dragNode) {
+        if (!isDragging) {
+            // LOGIKA KLIK (BUKAN DRAG)
+            if (delMode) {
+                removeDev(dragNode);
+            } else if (tool) {
+                // Mode Kabel ON
+                if (!cab) {
+                    cab = dragNode; // Pilih node pertama
+                } else {
+                    if (cab.id !== dragNode.id) {
+                        // Jika klik node berbeda, sambungkan / putuskan kabel
+                        const k = Lk.findIndex(l => (l[0]==cab.id && l[1]==dragNode.id) || (l[0]==dragNode.id && l[1]==cab.id));
+                        if (k >= 0) Lk.splice(k, 1);
+                        else Lk.push([cab.id, dragNode.id]);
+                    }
+                    cab = null; // Reset pilihan setelah disambungkan
+                }
+                draw();
+            } else {
+                // Mode Kabel OFF, buka config IP
+                openConfig(dragNode);
+            }
+        }
+        dragNode = null;
+        cv.releasePointerCapture(e.pointerId);
+    }
+});
+
+function draw(){
+    const fg = cv.querySelector('#fg'); if(!fg) return;
+    LG=computeLinks();
+    let s = Object.values(LG).map(g=>cableSvg(g.pts)).join('');
+    // perangkat yang lebih "depan" (y besar) digambar paling atas
+    s += D.slice().sort((a,b)=>a.y-b.y).map(d => {
+        if(d.t=='sw') return drawSwitch(d);
+        if(d.t=='rt') return drawRouter(d);
+        if(d.t=='sv') return drawServer(d);
+        return drawPC(d);
+    }).join('');
+    if(!D.length){
+        const msg = scene=='lab' ? '🖥️ Susun perangkat di Lab Komputer ini' : '🏢 Periksa jaringan kantor ini';
+        s += `<g pointer-events="none"><rect x="230" y="300" width="340" height="52" rx="16" fill="#071530" opacity=".85" stroke="#38bdf8" stroke-opacity=".7"/><text x="400" y="322" fill="#fff" font-size="16" font-weight="800" text-anchor="middle">${msg}</text><text x="400" y="342" fill="#9cd" font-size="12" text-anchor="middle">Tambahkan perangkat dari tombol di sebelah kiri</text></g>`;
+    }
+    fg.innerHTML = s;
+}
+
+function openConfig(d){
+    sl=d; draw();
+    const c=b.querySelector('#cf');
+    if(d.t=='sw') {
+        c.innerHTML='<b>Switch</b><br>Tidak perlu IP.';
+        return;
+    }
+    
+    const i1 = (d.ip||'').split('.');
+    const g1 = (d.gw||'').split('.');
+    
+    let html = `<div style="font-weight:bold;color:var(--yl);margin-bottom:8px;">${d.name} - Config</div>`;
+    html += `<div class="ip-box">`;
+    html += `
+    <div class="ip-row">
+        <span>IP</span>
+        <input type="text" id="ip1" value="${i1[0]||''}" maxlength="3"> .
+        <input type="text" id="ip2" value="${i1[1]||''}" maxlength="3"> .
+        <input type="text" id="ip3" value="${i1[2]||''}" maxlength="3"> .
+        <input type="text" id="ip4" value="${i1[3]||''}" maxlength="3">
+    </div>`;
+    
+    if (d.t === 'pc' || d.t === 'sv') {
+        html += `
+        <div class="ip-row">
+            <span>Gateway</span>
+            <input type="text" id="gw1" value="${g1[0]||''}" maxlength="3"> .
+            <input type="text" id="gw2" value="${g1[1]||''}" maxlength="3"> .
+            <input type="text" id="gw3" value="${g1[2]||''}" maxlength="3"> .
+            <input type="text" id="gw4" value="${g1[3]||''}" maxlength="3">
+        </div>`;
+    }
+    
+    html += `</div><button class="btn" id="sv" style="width:100%;margin-top:12px;font-size:16px;">Simpan Config</button>`;
+    c.innerHTML = html;
+    
+    c.querySelector('#sv').onclick=()=>{
+        d.ip = [1,2,3,4].map(i=>c.querySelector('#ip'+i).value.trim()).join('.');
+        if(d.ip==='...') d.ip='';
+        
+        if (c.querySelector('#gw1')) {
+            d.gw = [1,2,3,4].map(i=>c.querySelector('#gw'+i).value.trim()).join('.');
+            if(d.gw==='...') d.gw='';
+        }
+        draw(); 
+        log(`&gt; Config ${d.name} disimpan.`);
+    };
+}
+
+const tl=b.querySelector('#tl');const bt=(h,f)=>{const e=el(`<button class="btn" style="margin:2px">${h}</button>`);e.onclick=()=>f(e);tl.appendChild(e)};
+
+if(mode==4 && phase==1){
+    bt('+ Komputer',()=>{const n=D.filter(x=>x.t=='pc').length;if(n>=10)return toast('Maksimal 10 komputer');const p=slotPos();D.push({id:uid++,t:'pc',x:p.x,y:p.y,name:pcName(),ip:'',gw:''});draw()});
+    bt('+ Switch',()=>{if(D.filter(x=>x.t=='sw').length>=3)return toast('Maks 3 Switch');D.push({id:uid++,t:'sw',x:400,y:240,name:'Switch'});draw()});
+    bt('+ Router',()=>{if(D.some(x=>x.t=='rt'))return toast('Router sudah ada');D.push({id:uid++,t:'rt',x:600,y:300,name:'Router',ip:''});draw()});
+    bt('+ Server',()=>{if(D.some(x=>x.t=='sv'))return toast('Server sudah ada');D.push({id:uid++,t:'sv',x:200,y:300,name:'Server',ip:'',gw:''});draw()});
+    bt('🔃 Reset',()=>{D=[];Lk=[];uid=0;cab=null;draw()});
+    bt('🗑 Hapus Perangkat: OFF',e=>{delBtn=e;setDel(!delMode)});
+    bt('🔌 Mode Kabel: OFF',e=>{cabBtn=e;setCable(!tool)});
+}
+if(mode==4){
+    b.querySelector('#startch').onclick=e=>{
+        phase=2; D=[]; Lk=[]; uid=0; tool=null; cab=null; sl=null; delMode=false; cv.classList.remove('del');
+        e.currentTarget.style.display='none';
+		b.querySelector('#gd').style.display='none'; 
+        b.querySelector('#sim-ttl').innerHTML='🏆 Tantangan';
+        b.querySelector('#sim-desc').innerHTML='Misi: Buat topologi <b>Star</b> dengan <b>1 Switch</b>, <b>1 Router</b>, <b>1 Server</b> dan <b>3 Komputer</b>. Hubungkan semua perangkat ke Switch. Atur IP Router <code>192.168.1.1</code>, Server <code>192.168.1.20</code>, Komputer <code>192.168.1.10</code> - <code>.12</code>. Semua Komputer dan Server memakai Gateway <code>192.168.1.1</code> (IP Router). Lalu Uji Ping.';
+        b.querySelector('#cf').innerHTML='Klik perangkat untuk mengatur IP &amp; Gateway.';
+        lg.innerHTML='&gt; Terminal siap.';
+        tl.innerHTML='';
+        bt('+ Komputer',()=>{const n=D.filter(x=>x.t=='pc').length;if(n>=3)return toast('Tantangan ini hanya butuh 3 komputer');const p=slotPos();D.push({id:uid++,t:'pc',x:p.x,y:p.y,name:pcName(),ip:'',gw:''});draw()});
+        bt('+ Switch',()=>{if(D.some(x=>x.t=='sw'))return toast('Switch sudah ada');D.push({id:uid++,t:'sw',x:400,y:240,name:'Switch'});draw()});
+        bt('+ Router',()=>{if(D.some(x=>x.t=='rt'))return toast('Router sudah ada');D.push({id:uid++,t:'rt',x:600,y:300,name:'Router',ip:''});draw()});
+        bt('+ Server',()=>{if(D.some(x=>x.t=='sv'))return toast('Server sudah ada');D.push({id:uid++,t:'sv',x:200,y:300,name:'Server',ip:'',gw:''});draw()});
+        bt('🔃 Reset',()=>{D=[];Lk=[];uid=0;cab=null;draw()});
+    bt('🗑 Hapus Perangkat: OFF',e=>{delBtn=e;setDel(!delMode)});
+        bt('🔌 Mode Kabel: OFF',e=>{cabBtn=e;setCable(!tool)});
+        draw();
+    };
+}
+if(mode==5){
+    b.querySelector('#sim-ttl').innerHTML='🛠️ Challenge: Perbaiki Jaringan Kantor Rhino Net';
+    b.querySelector('#sim-desc').innerHTML='Misi: Temukan semua masalah lalu Uji Ping.';
+    bt('🔌 Mode Kabel: OFF',e=>{cabBtn=e;setCable(!tool)});
+}
+
+// ================= ANIMASI PAKET DATA (UJI PING) =================
+let pkRAF = 0;
+// cari jalur host -> router, hanya lewat Switch
+const routeTo = (a,r) => {
+    const prev={}; prev[a.id]=null; const q=[a];
+    while(q.length){
+        const x=q.shift(); if(x.id==r.id) break;
+        for(const l of Lk){
+            const o=l[0]==x.id?l[1]:l[1]==x.id?l[0]:null;
+            if(o==null||(o in prev)) continue;
+            const n=D.find(z=>z.id==o); if(!n) continue;
+            if(n.t!='sw'&&n.id!=r.id) continue;
+            prev[o]=x.id; q.push(n);
+        }
+    }
+    if(!(r.id in prev)) return null;
+    const path=[]; let c=r.id; while(c!=null){path.unshift(c); c=prev[c];}
+    return path;
+};
+function animatePing(uniq){
+    cancelAnimationFrame(pkRAF);
+    const g=cv.querySelector('#pk'); if(!g) return;
+    const rt=D.find(x=>x.t=='rt');
+    const hosts=D.filter(x=>x.t=='pc'||x.t=='sv');
+    const SEG=650, GAP=260;
+    const pk=hosts.map((h,i)=>{
+        const ok=!uniq.some(e=>e.startsWith(h.name+' ')||/^(IP )?Router /.test(e));
+        const path=rt?routeTo(h,rt):null;
+        return {h,ok,path,t0:i*GAP};
+    });
+    if(!pk.length){g.innerHTML='';return;}
+    const start=performance.now();
+    const node=id=>D.find(z=>z.id==id);
+    const mark=(x,y,good)=>`<g transform="translate(${x},${y})"><circle r="10" fill="${good?'#16a34a':'#dc2626'}" stroke="#fff" stroke-width="2"/><text y="4.5" fill="#fff" font-size="12" font-weight="800" text-anchor="middle">${good?'✔':'✖'}</text></g>`;
+    const packet=(x,y,c)=>`<g transform="translate(${x},${y})"><circle r="11" fill="${c}" opacity=".28"/><rect x="-7" y="-5" width="14" height="10" rx="2" fill="${c}" stroke="#fff" stroke-width="1.5"/><path d="M-7 -5 L0 1 L7 -5" fill="none" stroke="#fff" stroke-width="1.2"/></g>`;
+    const tick=now=>{
+        if(!cv.isConnected) return;
+        const el=now-start; let s='',alive=false;
+        for(const p of pk){
+            const h=node(p.h.id); if(!h) continue;
+            const e=el-p.t0; if(e<0){alive=true;continue;}
+            const hp={x:h.x,y:h.y+8};
+            if(!p.path||p.path.length<2){ // tidak ada jalur: paket gagal keluar dari komputer
+                if(e<1800){alive=true;if(e>250)s+=mark(hp.x,hp.y-48,false);} continue;
+            }
+            const nodes=p.path.map(node); if(nodes.some(n=>!n)) continue;
+            const n=nodes.length-1, sf=e/SEG;
+            const total=p.ok?2*n:n;
+            if(sf<total){
+                alive=true;
+                let k,u,col;
+                if(sf<n){k=Math.floor(sf);u=sf-k;col='#fbbf24';}
+                else{const j=sf-n;k=n-1-Math.floor(j);u=1-(j-Math.floor(j));col='#4ade80';}
+                const pt=linkPt(nodes[k],nodes[k+1],u);
+                // paket kembali digambar bila arah dibalik: kurva sama, u dibalik
+                s+=packet(pt.x,pt.y,p.ok?col:'#fbbf24');
+            } else if(e<total*SEG+1800){
+                alive=true;
+                const endN=p.ok?nodes[0]:nodes[n];
+                s+=mark(endN.x,endN.y-(p.ok?48:50),p.ok);
+            }
+        }
+        g.innerHTML=s;
+        if(alive) pkRAF=requestAnimationFrame(tick); else g.innerHTML='';
+    };
+    pkRAF=requestAnimationFrame(tick);
+}
+
+let awarded=false;
+b.querySelector('#ping').onclick=()=>{
+    const er=[];log('&gt; ping ...');
+    const oct='(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)';
+    const ipRe=new RegExp('^('+oct+'\\.){3}'+oct+'$');
+    const ipok=i=>ipRe.test(i||'');
+    const host=i=>{const o=+i.split('.')[3];return o>=1&&o<=254};
+    const net=i=>i.split('.').slice(0,3).join('.');
+    const byId=id=>D.find(x=>x.id==id);
+    const viaSwitch=(a,c)=>{const seen=new Set([a.id]),q=[a];while(q.length){const x=q.shift();for(const l of Lk){const o=l[0]==x.id?l[1]:l[1]==x.id?l[0]:null;if(o==null||seen.has(o))continue;const n=byId(o);if(!n)continue;if(n.id==c.id&&x.t=='sw')return true;if(n.t=='sw'){seen.add(o);q.push(n)}}}return false};
+    const hasSw=d=>Lk.some(l=>(l[0]==d.id||l[1]==d.id)&&[l[0],l[1]].some(i=>{const n=byId(i);return n&&n.id!=d.id&&n.t=='sw'}));
+    const sws=D.filter(x=>x.t=='sw'),rts=D.filter(x=>x.t=='rt'),pcs=D.filter(x=>x.t=='pc'),svs=D.filter(x=>x.t=='sv');
+    const hosts=pcs.concat(svs),rt=rts[0];
+
+    if(!sws.length) er.push('Belum ada Switch.');
+    if(!rt) er.push('Belum ada Router (dibutuhkan sebagai Gateway).');
+    if(!hosts.length) er.push('Belum ada Komputer atau Server.');
+
+    if(mode==4&&phase==2){
+        if(sws.length!==1) er.push('Harus ada tepat 1 Switch.');
+        if(pcs.length!==3) er.push('Harus ada tepat 3 Komputer.');
+        if(svs.length!==1) er.push('Harus ada 1 Server.');
+        if(rts.length!==1) er.push('Harus ada 1 Router.');
+    }
+
+    Lk.forEach(l=>{const a=byId(l[0]),c=byId(l[1]);if(a&&c&&a.t!='sw'&&c.t!='sw')er.push(`${a.name} dan ${c.name} tidak boleh dihubungkan langsung. Gunakan Switch.`)});
+
+    let rtok=false;
+    if(rt){
+        if(!hasSw(rt)) er.push('Router belum terhubung ke Switch.');
+        if(!ipok(rt.ip)) er.push('IP Router belum diisi atau tidak valid.');
+        else if(!host(rt.ip)) er.push('IP Router tidak boleh berakhiran .0 atau .255.');
+        else rtok=true;
+        if(rtok&&mode==4&&phase==2&&rt.ip!=='192.168.1.1') er.push('IP Router harus 192.168.1.1.');
+    }
+
+    hosts.forEach(p=>{
+        if(!hasSw(p)){er.push(`${p.name} kabel belum terhubung ke Switch.`)}
+        else if(rt&&hasSw(rt)&&!viaSwitch(p,rt)) er.push(`${p.name} tidak satu jaringan dengan Router (Switch belum saling terhubung).`);
+        if(!ipok(p.ip)){er.push(`${p.name} IP belum diisi atau tidak valid.`)}
+        else{
+            if(!host(p.ip)) er.push(`${p.name} IP tidak boleh berakhiran .0 atau .255.`);
+            if(rtok){
+                if(net(p.ip)!==net(rt.ip)) er.push(`${p.name} beda subnet dengan Router (harus ${net(rt.ip)}.x).`);
+                if(p.ip===rt.ip) er.push(`${p.name} IP sama dengan IP Router.`);
+            }
+            const dup=hosts.find(o=>o!==p&&o.ip===p.ip);
+            if(dup) er.push(`${p.name} IP ganda dengan ${dup.name}.`);
+            if(rt&&rt.ip===p.ip&&!rtok) er.push(`${p.name} IP sama dengan Router.`);
+        }
+        if(!ipok(p.gw)) er.push(`${p.name} Gateway belum diisi atau tidak valid.`);
+        else if(rtok&&p.gw!==rt.ip) er.push(`${p.name} Gateway salah (harus sama dengan IP Router: ${rt.ip}).`);
+    });
+
+    if(mode==4&&phase==2){
+        const want=['192.168.1.10','192.168.1.11','192.168.1.12'];
+        if(pcs.length==3&&!pcs.every(p=>!ipok(p.ip)||want.includes(p.ip))) er.push('IP Komputer harus 192.168.1.10, .11 dan .12.');
+        svs.forEach(v=>{if(ipok(v.ip)&&v.ip!=='192.168.1.20') er.push('IP Server harus 192.168.1.20.')});
+    }
+
+    const uniq=[...new Set(er)];
+    animatePing(uniq);
+    if(mode==4&&phase==1){
+        if(!uniq.length){ SFX.ok(); log('<span style="color:#6f6">✔ Konfigurasi benar. Semua perangkat saling terhubung. Silakan lanjut ke tantangan.</span>'); }
+        else { SFX.bad(); uniq.forEach(e=>log(`<span style="color:#f88">✖ ${e}</span>`)); }
+        return;
+    }
+    if(!uniq.length){
+        if(awarded) return;
+        awarded=true;
+        SFX.ok(); P(mode,mode==4?50:100);
+        log('<span style="color:#6f6">✔ Semua perangkat berhasil saling terhubung.</span>');
+        const f=el(`<div class="fb g" style="font-size:17px">🎉 Hebat, ${name}! Misi berhasil!<br><button class="btn o">SELESAI MISI</button></div>`);
+        tl.appendChild(f); f.querySelector('button').onclick=()=>{b.close();finish(mode)};
+    } else {
+        SFX.bad(); log('Belum berhasil, tetap semangat!');
+        uniq.forEach(e=>log(`<span style="color:#f88">✖ ${e}</span>`));
+    }
+};
+
+// TOMBOL PANDUAN — diposisikan di tengah bawah judul (khusus mode 4)
+if(mode==4){
+    b.querySelector('#gd').onclick=()=>modal(`<h2>📖 Panduan Konfigurasi</h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:17px;line-height:1.3">
+<div style="background:#0006;border-radius:14px;padding:12px"><h3>🏠 IP Address</h3>Alamat unik tiap perangkat, seperti alamat rumah. Contoh: <code>192.168.10.5</code>. Tidak boleh ada dua perangkat dengan IP sama. Akhiran <code>.0</code> dan <code>.255</code> tidak dipakai.</div>
+<div style="background:#0006;border-radius:14px;padding:12px"><h3>🏘️ Subnet</h3>Pada simulator ini, tiga angka pertama yang sama berarti satu "kompleks" (jaringan). <code>192.168.10.5</code> dan <code>192.168.10.9</code> satu jaringan, sedangkan <code>192.168.20.9</code> beda jaringan dan tidak bisa langsung berkomunikasi.</div>
+<div style="background:#0006;border-radius:14px;padding:12px"><h3>🚪 Gateway</h3>Pintu keluar menuju jaringan lain, misalnya Internet. Isinya adalah IP Router. Semua Komputer dan Server memakai gateway yang sama. Router tidak perlu gateway.</div>
+<div style="background:#0006;border-radius:14px;padding:12px"><h3>📋 Contoh</h3><table class="tb" style="font-size:15px"><tr><td>Router</td><td>IP 192.168.10.1</td></tr><tr><td>PC1</td><td>IP 192.168.10.5<br>Gateway 192.168.10.1</td></tr><tr><td>Server</td><td>IP 192.168.10.20<br>Gateway 192.168.10.1</td></tr></table></div>
+<div style="background:#0006;border-radius:14px;padding:12px;grid-column:1/3"><h3>🔧 Langkah Konfigurasi</h3><ol style="padding-left:22px"><li>Tambahkan Switch, Router, Komputer, dan Server.</li><li>Aktifkan <b>Mode Kabel</b>, klik dua perangkat untuk menyambungkannya. Hubungkan semua ke Switch.</li><li>Matikan Mode Kabel, lalu klik perangkat untuk mengisi IP dan Gateway, kemudian <b>Simpan Config</b>.</li><li>Tekan <b>Uji Ping</b> dan baca pesan di terminal.</li></ol></div></div>`);
+}
+
+draw()}
+
+/* ---------- NODE 6 ---------- */
+const FQ=[
+{t:'mc',q:'Kantor desa memiliki beberapa jaringan lokal dan ingin semuanya memakai satu koneksi internet. Perangkat apa yang menentukan jalur dan meneruskan paket data antar jaringan berdasarkan alamat IP?',o:['Switch','Router','Kabel UTP','Monitor'],a:1},
+{t:'mc',q:'Operator lab sekolah ingin agar saat kabel satu komputer putus, komputer lain tetap bekerja dan lokasi gangguan mudah dicari. Topologi mana yang paling tepat?',o:['Bus','Ring','Star','Satu kabel panjang tanpa perangkat pusat'],a:2},
+{t:'tf',q:'Lab komputer menambah 10 komputer baru. Pada topologi star, cukup menghubungkan setiap komputer baru ke switch tanpa mengganggu komputer yang lama.',a:true},
+{t:'tf',q:'Pada jaringan bus sebuah kantor, kabel backbone terputus di tengah. Menurut analisismu, hanya satu komputer yang terganggu sedangkan komputer lain tetap normal.',a:false},
+{t:'fill',q:'Modem mengubah sinyal komputer agar bisa dikirim lewat jaringan penyedia layanan, dan sebaliknya. Nama modem berasal dari singkatan modulator-____ . (isi dengan satu kata)',a:['demodulator']},
+{t:'mc',q:'Di sebuah rumah sakit, data pasien disimpan pada satu komputer yang melayani permintaan dari puluhan komputer perawat. Peran komputer yang menyimpan data pasien tersebut adalah...',o:['Client','Modem','Server','Kabel jaringan'],a:2},
+{t:'fill',q:'Sebuah bank membutuhkan jaringan yang tetap hidup walau beberapa jalur putus, karena tiap komputer punya banyak jalur ke komputer lain. Topologi tersebut adalah topologi ____ .',a:['mesh','full mesh']},
+{t:'mc',q:'Pemerintah kota menghubungkan balai kota dengan tiga dinas, dan tiap dinas punya beberapa kantor. Jaringan ingin dikelola per cabang serta dikembangkan bertahap. Topologi yang paling sesuai adalah...',o:['Full mesh, karena paling murah','Tree, karena tersusun bertingkat dan mudah dikelola per cabang','Bus, karena tidak mungkin terganggu','Ring, karena tidak memerlukan perencanaan'],a:1},
+{t:'tf',q:'Ani berpendapat bahwa Wi-Fi dan kabel Ethernet sama-sama membawa data lewat media fisik berupa kabel.',a:false},
+{t:'dnd',q:'Pasangkan perangkat dengan peran yang tepat dalam jaringan sekolahmu.',pairs:[['Router','Menghubungkan jaringan sekolah ke jaringan lain atau internet berdasarkan IP'],['Switch','Menghubungkan semua komputer lab dalam satu jaringan lokal'],['Server','Menyimpan file tugas yang diakses banyak siswa']]}
+].map(q=>({...q,n:6,p:10,e:q.e||'',nr:1}));
+function n6(){seq(FQ,0,()=>{finish(6);lbSave();SFX.win();const b=modal(`<h2>🏆 Selamat, ${name}!</h2><p style="font-size:26px">Total poinmu: <b style="color:var(--yl);font-size:48px">${pts}</b> / 400</p><p style="font-size:20px;margin:10px 0">Kamu resmi menjadi <b>Penjelajah Jaringan RHINO NET</b>!</p><button class="btn o" id="ct">🎓 DOWNLOAD SERTIFIKAT</button> <button class="btn" id="bk">KEMBALI KE PETA</button>`);b.querySelector('#bk').onclick=b.querySelector('.x').onclick;b.querySelector('#ct').onclick=cert})}
+const esc=t=>String(t).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
+/* ---------- LEADER BOARD ---------- */
+const LBK='rhinonet_leaderboard_v1';
+function lbGet(){try{const a=JSON.parse(localStorage.getItem(LBK)||'[]');return Array.isArray(a)?a:[]}catch(e){return[]}}
+function lbSave(){try{const a=lbGet(),i=a.findIndex(r=>String(r.n).toLowerCase()==name.toLowerCase()),r={n:name,p:pts,d:Date.now()};if(i<0)a.push(r);else if(pts>=a[i].p)a[i]=r;localStorage.setItem(LBK,JSON.stringify(a))}catch(e){}}
+function lb(){const a=lbGet().sort((x,y)=>y.p-x.p||x.d-y.d).slice(0,10),med=['🥇','🥈','🥉'];
+const rows=a.map((r,i)=>`<tr class="${String(r.n).toLowerCase()==name.toLowerCase()?'me':''}"><td>${med[i]||i+1}</td><td>${esc(r.n)}</td><td>${r.p}</td></tr>`).join('');
+modal(`<h2>🏅 Leader Board</h2><p style="font-size:16px;color:#9cd;margin-bottom:10px">10 peringkat tertinggi di perangkat ini</p>${a.length?`<table class="tb lbt"><tr><td style="color:#9cd">#</td><td style="color:#9cd">Nama</td><td style="color:#9cd">Poin</td></tr>${rows}</table>`:'<p style="font-size:20px">Belum ada data peringkat.</p>'}`)}
+function cert(){const c=document.createElement('canvas');c.width=1400;c.height=990;const x=c.getContext('2d');const g=x.createLinearGradient(0,0,1400,990);g.addColorStop(0,'#ffffff');g.addColorStop(1,'#d8ecff');x.fillStyle=g;x.fillRect(0,0,1400,990);x.strokeStyle='#0a2a66';x.lineWidth=14;x.strokeRect(30,30,1340,930);x.strokeStyle='#ff9f1a';x.lineWidth=5;x.strokeRect(54,54,1292,882);x.textAlign='center';x.fillStyle='#0a2a66';
+x.font='800 78px "Baloo 2",sans-serif';x.fillText('SERTIFIKAT PENGHARGAAN',700,200);x.font='30px "Baloo 2",sans-serif';x.fillText('Diberikan kepada:',700,290);x.fillStyle='#f47c00';x.font='800 96px "Baloo 2",sans-serif';x.fillText(name,700,410);x.fillStyle='#0a2a66';x.font='30px "Baloo 2",sans-serif';x.fillText('telah menyelesaikan seluruh misi game edukatif RHINO NET',700,490);x.fillText('materi Jaringan Komputer (Informatika Fase F/XI)',700,535);x.font='800 44px "Baloo 2",sans-serif';x.fillText('Total Poin: '+pts+' / 400',700,625);x.font='800 36px "Baloo 2",sans-serif';x.fillText('Gelar: Penjelajah Jaringan RHINO NET',700,690);x.font='24px "Baloo 2",sans-serif';x.fillText(new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}),700,780);x.fillText('Muhammad Fauzi Utama, S.Kom - SMAN 10 Pandeglang',700,880);
+const out=()=>{try{c.toBlob(bl=>{if(!bl)return toast('Gagal membuat sertifikat');const u=URL.createObjectURL(bl),a=document.createElement('a');a.href=u;a.download='Sertifikat_RHINO_NET_'+name.replace(/[^\w-]+/g,'_')+'.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),5000)},'image/png')}catch(e){try{window.open(c.toDataURL('image/png'))}catch(_){toast('Gagal mengunduh sertifikat')}}};const im=new Image();im.onload=()=>{x.drawImage(im,80,620,207,250);out()};im.onerror=out;im.src='data:image/png;base64,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'}
+cover();
+</script></body></html>
