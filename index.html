@@ -998,8 +998,7 @@ qb.innerHTML=`<div class="fci ${bs?'boss':''}">${bs?'🚨 INSIDEN BESAR':'⚠️
 const A=qb.querySelector('#a'),F=qb.querySelector('#f');let ans=0;
 const resolve=(good,cor)=>{if(ans||over)return;ans=1;A.querySelectorAll('button,input').forEach(x=>x.disabled=1);res[i]=good?1:2;
 if(good){nok++;combo++;SFX.ok();const bn=BONUS+(combo>=3?CBONUS:0);deadline+=bn*1000;flash('+'+bn+' detik'+(combo>=2?' · COMBO x'+combo:''),'g');hud();F.innerHTML='<div class="fb g">🎉 Terpasang! Gedung menyala kembali.</div>';setTimeout(next,1100)}
-else{combo=0;hearts--;SFX.bad();hud();paused=1;pauseAt=Date.now();F.innerHTML=`<div class="fb r">💔 Jawabanmu kurang tepat, ${name}!${hearts<=0?'<br>Hatimu sudah habis.':''}<br><button class="btn o">LANJUT</button></div>`;
-F.querySelector('button').onclick=()=>{if(hearts<=0)return lose('hati');deadline+=Date.now()-pauseAt;paused=0;next()}}};
+else{combo=0;hearts--;SFX.bad();hud();F.innerHTML=`<div class="fb r">💔 Jawabanmu kurang tepat, ${name}!${hearts<=0?'<br>Hatimu sudah habis.':''}</div>`;setTimeout(()=>hearts<=0?lose('hati'):next(),1100)}};
 if(q.t=='mc'||q.t=='tf'){const o=q.t=='tf'?['Benar','Salah']:q.o,a=q.t=='tf'?(q.a?0:1):q.a;o.forEach((t,k)=>{const e=el(`<button class="op">${'ABCD'[k]}. ${t}</button>`);e.onclick=()=>{e.classList.add(k==a?'g':'r');resolve(k==a,o[a])};A.appendChild(e)})}
 else if(q.t=='fill'){A.innerHTML=`<input type="text" placeholder="Ketik jawabanmu" autocomplete="off"><button class="btn o">JAWAB</button>`;const inp=A.querySelector('input'),bt=A.querySelector('button');bt.onclick=()=>{const v=inp.value.trim().toLowerCase();if(!v)return;inp.blur();resolve(q.a.includes(v),q.a[0])};inp.onkeydown=e=>{e.stopPropagation();if(e.key=='Enter')bt.click()};inp.onkeyup=inp.onkeypress=e=>e.stopPropagation()}
 else{matcher(A,q.pairs,n=>resolve(n==q.pairs.length,q.pairs.map(p=>`${p[0]} → ${p[1].slice(0,38)}…`).join('<br>')),2)}};
