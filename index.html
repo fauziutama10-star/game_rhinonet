@@ -102,6 +102,36 @@ input[type=text]{background:#fff;caret-color:#0a2a66;-webkit-user-select:text;us
 .op.sel{background:var(--or)!important;border-color:#ffe29a}
 .sim.L .side{order:-1}.sim.L svg{height:410px}.lbt td{padding:8px 12px;font-size:20px}.lbt tr.me td{background:#ffd23f33}.lbt td:first-child{width:70px;text-align:center}.lbt td:last-child{text-align:right;color:var(--yl);font-weight:800}
 
+
+/* ---------- TIMER ---------- */
+.tmr{display:flex;align-items:center;gap:12px;margin:6px 0 12px;font-size:22px;font-weight:800;color:var(--yl)}
+.tmr span{min-width:120px;white-space:nowrap}.tmr .tmt{flex:1;height:16px;border-radius:10px;background:#031030;border:2px solid #6cc8ff;overflow:hidden}
+.tmr i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#22c55e,#ffd23f);transition:width .25s linear}
+.tmr.low{color:#ff8a8a;animation:tmP .6s ease-in-out infinite}.tmr.low i{background:linear-gradient(90deg,#ef4444,#ff9f1a)}
+@keyframes tmP{50%{opacity:.55}}
+
+
+/* ---------- FINAL CHALLENGE: SELAMATKAN KOTA ---------- */
+.fcd{position:absolute;inset:0;background:linear-gradient(#031030d0,#06183df0)}
+.fch{position:absolute;left:0;right:0;top:0;height:84px;display:flex;align-items:center;justify-content:space-between;padding:0 26px}
+.fchh{display:flex;gap:6px;background:#0a2a66dd;border:3px solid var(--sky);border-radius:40px;padding:2px 18px;font-size:34px;min-width:150px;justify-content:center}.fchh .x{filter:grayscale(1);opacity:.3}
+.fct{text-align:center;font-size:30px;font-weight:800;color:var(--yl);line-height:.95}.fct small{font-size:18px;color:#fff;letter-spacing:3px}
+.fcr{display:flex;align-items:center;gap:12px}.fcc{display:none;background:linear-gradient(#ffb84d,#f47c00);border:3px solid #ffe29a;border-radius:20px;padding:0 14px;font-weight:800;font-size:20px;animation:pop .3s}
+.fck{background:#0a2a66dd;border:3px solid var(--sky);border-radius:40px;padding:0 22px;font-size:32px;font-weight:800;min-width:150px;text-align:center}.fck.low{color:#ff8a8a;border-color:var(--bad);animation:tmP .6s ease-in-out infinite}
+.fcbar{position:absolute;left:26px;right:26px;top:88px;height:14px;border-radius:10px;background:#031030;border:2px solid #6cc8ff;overflow:hidden}.fcbar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#22c55e,#ffd23f);transition:width .25s linear}
+.fcs{position:absolute;left:0;right:0;top:114px;display:flex;gap:10px;justify-content:center}
+.fcb{width:92px;height:70px;border-radius:16px;border:3px solid #6cc8ff55;background:#0a2a6699;display:flex;align-items:center;justify-content:center;font-size:36px;transition:.3s}.fcb span{filter:grayscale(1) brightness(.6)}
+.fcb.cur{border-color:var(--or);background:#ff9f1a33;animation:fcp 1s ease-in-out infinite}.fcb.cur span{filter:none}
+.fcb.on{border-color:var(--ok);background:#14803c88;box-shadow:0 0 18px #22c55eaa}.fcb.on span{filter:none}
+.fcb.off{border-color:var(--bad);background:#a32a2a77}.fcb.off span{filter:none}
+@keyframes fcp{50%{transform:scale(1.08);box-shadow:0 0 18px #ff9f1aaa}}
+.fcq{position:absolute;left:130px;top:200px;width:1020px;max-width:1020px;max-height:500px;min-width:0}
+.fci{display:inline-block;background:#ff9f1a;color:#4a2800;font-weight:800;font-size:20px;padding:2px 16px;border-radius:14px}.fci.boss{background:var(--bad);color:#fff;animation:tmP .9s ease-in-out infinite}
+.fcq .q{font-size:24px;margin:8px 0 8px}.fcq .op{margin:6px 0;padding:8px 18px}
+.fcf{position:absolute;right:40px;top:104px;font-size:28px;font-weight:800;color:var(--yl);text-shadow:0 2px 6px #000;pointer-events:none;animation:fcu 1.1s forwards;z-index:25}.fcf.g{color:#6dff9a}
+@keyframes fcu{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(46px)}}
+.fcx{position:absolute;left:24px;bottom:18px;font-size:26px;padding:6px 16px}
+
 /* ---------- ROTATE HINT (portrait di HP/tablet) ---------- */
 #rot{display:none;position:fixed;inset:0;z-index:99999;background:radial-gradient(circle at 50% 40%,#123f94,#06183d 70%);color:#fff;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;gap:22px;cursor:pointer;user-select:none;-webkit-user-select:none}
 #rot .ph{position:relative;width:76px;height:128px;border:6px solid #5cc8ff;border-radius:16px;background:#0a2a66;box-shadow:0 0 28px #2aa3ff88;animation:rotPhone 2.8s ease-in-out infinite}
@@ -124,9 +154,26 @@ input[type=text]{background:#fff;caret-color:#0a2a66;-webkit-user-select:text;us
 <script>
 const S=document.getElementById('S');let name='',pts=0,done={},mute=false,AC;
 const vp=()=>{const v=window.visualViewport;return[v&&v.width||innerWidth,v&&v.height||innerHeight]};
-const fit=()=>{const[w,h]=vp();S.style.transform=`translate(-50%,-50%) scale(${Math.min(w/1280,h/720)})`};fit();
-addEventListener('resize',fit);addEventListener('orientationchange',()=>{fit();setTimeout(fit,150);setTimeout(fit,500)});
-if(window.visualViewport)visualViewport.addEventListener('resize',fit);
+/* Skala game mengikuti layar. Saat keyboard HP terbuka (mengetik nama / IP), skala TIDAK ikut mengecil:
+   ukuran dasar diingat, lalu kolom yang sedang diisi digeser (dan diperbesar sedikit) ke area yang tidak tertutup keyboard. */
+const coarse=matchMedia('(pointer:coarse)').matches;let base=null;
+const typing=()=>{const a=document.activeElement;return a&&a.tagName&&/^(INPUT|TEXTAREA)$/.test(a.tagName)&&a.type!=='range'&&a.type!=='checkbox'&&a.type!=='button'?a:null};
+const fit=()=>{const v=window.visualViewport,[w,h]=vp(),a=typing();
+const kb=!!(a&&coarse&&base&&v&&h<base[1]*.85);
+if(!kb){base=[w,h];S.style.transform=`translate(-50%,-50%) scale(${Math.min(w/1280,h/720)})`;return}
+const s0=Math.min(base[0]/1280,base[1]/720),bx=a.closest('.box')||a,bw=Math.max(bx.offsetWidth,300);
+const k=Math.max(s0*.8,Math.min(s0*1.4,v.width*.96/bw));
+const sr=S.getBoundingClientRect(),cs=sr.width/1280||s0,ar=a.getBoundingClientRect();
+const ux=(ar.left+ar.width/2-sr.left)/cs,uy=(ar.top+ar.height/2-sr.top)/cs;
+const W=document.body.clientWidth,H=document.body.clientHeight;
+const tx=v.offsetLeft+v.width/2-ux*k,ty=v.offsetTop+v.height/2-uy*k;
+const dx=tx-(W/2-640*k),dy=ty-(H/2-360*k);
+const t=`translate(calc(-50% + ${dx.toFixed(1)}px),calc(-50% + ${dy.toFixed(1)}px)) scale(${k.toFixed(4)})`;
+if(S.style.transform!==t)S.style.transform=t};fit();
+addEventListener('resize',fit);addEventListener('orientationchange',()=>{base=null;fit();setTimeout(fit,150);setTimeout(fit,500)});
+if(window.visualViewport){visualViewport.addEventListener('resize',fit);visualViewport.addEventListener('scroll',fit)}
+document.addEventListener('focusin',()=>{fit();setTimeout(fit,120);setTimeout(fit,350);setTimeout(fit,700)});
+document.addEventListener('focusout',()=>{setTimeout(fit,150);setTimeout(fit,500)});
 /* ---------- LAYAR PENUH ---------- */
 (()=>{const D=document,E=D.documentElement,rq=E.requestFullscreen||E.webkitRequestFullscreen,ex=D.exitFullscreen||D.webkitExitFullscreen,
 fsEl=()=>D.fullscreenElement||D.webkitFullscreenElement,
@@ -137,8 +184,7 @@ standalone=matchMedia('(display-mode: standalone)').matches||matchMedia('(displa
 const enter=async()=>{if(!can||fsEl())return;try{await rq.call(E)}catch(e){}try{if(screen.orientation&&screen.orientation.lock)await screen.orientation.lock('landscape')}catch(e){}setTimeout(fit,200)};
 const rot=D.getElementById('rot');
 if(can)rot.addEventListener('click',enter);else rot.querySelector('p').textContent='Game RHINO NET paling nyaman dimainkan dalam mode layar mendatar. Pastikan kunci rotasi layar di HP Anda sudah dimatikan.';
-/* ketukan pertama di HP/tablet -> layar penuh otomatis */
-if(can&&touch&&!standalone){const once=e=>{if(e.target.closest&&e.target.closest('#fs'))return;D.removeEventListener('click',once,true);enter()};D.addEventListener('click',once,true)}
+/* layar penuh otomatis dihapus: pemain bisa memakai tombol layar penuh (pojok kanan bawah) bila mau */
 /* tombol manual */
 const btn=D.getElementById('fs'),IN='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',OUT='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg>';
 if(can&&!standalone){btn.style.display='flex';const sync=()=>{const f=!!fsEl();btn.innerHTML=f?OUT:IN;btn.title=f?'Keluar layar penuh':'Layar penuh'};sync();
@@ -171,24 +217,33 @@ d.querySelector('#b3').onclick=()=>modal(`<h2>Pengembang</h2><div style="display
 d.querySelector('#b4').onclick=()=>modal(`<h2>Referensi</h2><table class="tb"><tr><td>Aset Gambar</td><td>Dibuat menggunakan ChatGPT</td></tr><tr><td>Aset Suara</td><td>Dibuat menggunakan Claude AI</td></tr><tr><td>Aset Video</td><td>Dibuat menggunakan Claude AI</td></tr><tr><td>Referensi Materi</td><td>Maryono, Dwi. 2026. <i>Cara Mengaplikasikan Informatika</i>. Tiga Serangkai Putra Mandiri</td></tr></table>`)}
 /* ---------- MENU GAME ---------- */
 const ND=[[1,'node_mengenal_jaringan.png',26.5,25.5,19],[2,'node_perangkat_jaringan.png',50,21,15.5],[3,'node_topologi_jaringan.png',76,27,18],[4,'node_simulasi_jaringan.png',31,63.5,21.5],[5,'node_challenge.png',58,68.5,23],[6,'node_final_challenge.png',81.5,58,21]];
-const TX={1:['Hai, '+'@'+'! Sebelum membangun jaringan, kita harus memahami apa itu jaringan komputer. Di misi ini, tonton video pembelajaran sampai selesai dan jawab beberapa pertanyaan. Perhatikan baik-baik, ya! Pengetahuan ini akan membantumu menghadapi misi berikutnya.','TONTON VIDEO',n1],2:['Sekarang kamu akan mengenal perangkat yang membantu jaringan bekerja. Pelajari fungsi masing-masing perangkat, lalu uji kemampuanmu dengan mencocokkan nama perangkat dan kegunaannya.','PELAJARI PERANGKAT',n2],3:['Saatnya merancang jalur koneksi! Topologi jaringan menggambarkan bagaimana perangkat disusun dan dihubungkan. Amati bentuk setiap pola!','JELAJAHI TOPOLOGI',n3],4:['Kamu sudah punya bekal pengetahuan. Sekarang waktunya praktik! Susun perangkat jaringan komputer yang diperlukan, hubungkan menggunakan kabel, lalu lakukan konfigurasi. Amati hasilnya dan pastikan perangkat dapat berkomunikasi. Yuk, buktikan bahwa kamu bisa membangun jaringan!','BUKA SIMULATOR',()=>sim(4)],5:['Wah, ada masalah di jaringan kantor Rhino Net! Beberapa perangkat tidak bisa terhubung. Tugasmu adalah menemukan penyebabnya dan memperbaikinya. Gunakan pengetahuanmu, periksa setiap koneksi, dan selesaikan misi dengan tepat!','TERIMA TANTANGAN',()=>sim(5)],6:['Inilah ujian terakhirmu, @! Kamu akan menghadapi soal-soal tentang materi Jaringan Komputer. Ingat kembali semua yang sudah kamu pelajari. Baca setiap pertanyaan dengan teliti dan pilih jawaban terbaik. Tunjukkan bahwa kamu siap menjadi Penjelajah Jaringan RHINO NET!','MULAI UJIAN AKHIR',n6]};
+const TX={1:['Hai, '+'@'+'! Sebelum membangun jaringan, kita harus memahami apa itu jaringan komputer. Di misi ini, tonton video pembelajaran sampai selesai dan jawab beberapa pertanyaan. Perhatikan baik-baik, ya! Pengetahuan ini akan membantumu menghadapi misi berikutnya.','TONTON VIDEO',n1],2:['Sekarang kamu akan mengenal perangkat yang membantu jaringan bekerja. Pelajari fungsi masing-masing perangkat, lalu uji kemampuanmu dengan mencocokkan nama perangkat dan kegunaannya.','PELAJARI PERANGKAT',n2],3:['Saatnya merancang jalur koneksi! Topologi jaringan menggambarkan bagaimana perangkat disusun dan dihubungkan. Amati bentuk setiap pola!','JELAJAHI TOPOLOGI',n3],4:['Kamu sudah punya bekal pengetahuan. Sekarang waktunya praktik! Susun perangkat jaringan komputer yang diperlukan, hubungkan menggunakan kabel, lalu lakukan konfigurasi. Amati hasilnya dan pastikan perangkat dapat berkomunikasi. Yuk, buktikan bahwa kamu bisa membangun jaringan!','BUKA SIMULATOR',()=>sim(4)],5:['Wah, ada masalah di jaringan kantor Rhino Net! Beberapa perangkat tidak bisa terhubung. Tugasmu adalah menemukan penyebabnya dan memperbaikinya. Gunakan pengetahuanmu, periksa setiap koneksi, dan selesaikan misi dengan tepat!','TERIMA TANTANGAN',()=>sim(5)],6:['Gawat, @! Kota RHINO NET diserang gangguan jaringan beruntun! Kamu punya 3 hati dan waktu terbatas untuk memperbaiki semua insiden. Jawaban benar menyalakan kembali gedung dan menambah waktu. Jawaban salah mengurangi hati. Selamatkan kota ini, Penjelajah!','MULAI MISI PENYELAMATAN',n6]};
 const SPK_ON='<svg viewBox="0 0 24 24" width="28" height="28"><path d="M3 9.5v5h3.6L12 19V5L6.6 9.5z" fill="#fff"/><path d="M15.2 9a4.2 4.2 0 0 1 0 6M17.6 6.5a7.6 7.6 0 0 1 0 11" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round"/></svg>',SPK_OFF='<svg viewBox="0 0 24 24" width="28" height="28"><path d="M3 9.5v5h3.6L12 19V5L6.6 9.5z" fill="#fff"/><path d="M15.5 9.5l5 5m0-5l-5 5" stroke="#fff" stroke-width="1.9" stroke-linecap="round"/></svg>';
 function map(){clear();const n=Object.keys(done).length;const d=el(`<div class="scr map"><div class="top"><img src="logo_rhino.png"><div class="pill"><div class="pt"><span class="coin"><svg viewBox="0 0 24 24" width="24" height="24"><path d="M12 3.2l2.6 5.4 5.9.8-4.3 4.1 1 5.9-5.2-2.8-5.2 2.8 1-5.9-4.3-4.1 5.900-.8z" fill="#9a5b00"/></svg></span><div><small>POIN</small><span id="pts">${pts}</span></div></div><button class="ib" id="hm"><svg viewBox="0 0 24 24" width="28" height="28"><path d="M12 3.2 2.8 11.4h2.6V20h5v-5.6h3.2V20h5v-8.6h2.6z" fill="#fff"/></svg></button><button class="ib" id="sn">${mute?SPK_OFF:SPK_ON}</button></div></div><div class="prog"><div style="display:flex;justify-content:space-between"><b>Progres Game</b><b style="color:var(--yl)">${Math.round(n/6*100)}%</b></div><div class="bar">${[1,2,3,4,5,6].map(i=>`<i class="${i<=n?'on':''}"></i>`).join('')}</div>${n} dari 6 gedung selesai</div></div>`);S.appendChild(d);
 ND.forEach(([id,img,x,y,w])=>{const lk=id>1&&!done[id-1];const e=el(`<div class="nd ${lk?'lk':''} ${done[id]?'dn':''} ${(!done[id]&&!lk)?'cur':''}" style="left:${x}%;top:${y}%;width:${w}%"><img src="${img}"></div>`);e.onclick=()=>{if(lk)return toast('Selesaikan misi sebelumnya dulu ya!');const t=TX[id];say(t[0].replace('@',name),t[1],t[2])};d.appendChild(e)});
 d.querySelector('#hm').onclick=cover;d.querySelector('#sn').onclick=e=>{mute=!mute;e.currentTarget.innerHTML=mute?SPK_OFF:SPK_ON}}
 /* ---------- KUIS ---------- */
-function matcher(box,pairs,cb,quiet){let sel=null,drag=null;const names=shuf(pairs.map(p=>p[0]));
+function timer(host,secs,onEnd,before){const e=el(`<div class="tmr"><span>⏱ <b>${secs}</b> detik</span><div class="tmt"><i></i></div></div>`);before?host.insertBefore(e,before):host.prepend(e);
+const t0=Date.now(),fi=e.querySelector('i'),nb=e.querySelector('b');let dead=0,lastN=secs;
+const stop=()=>{dead=1;clearInterval(iv)};
+const iv=setInterval(()=>{if(dead)return;if(!e.isConnected){stop();return}const left=secs-(Date.now()-t0)/1000;
+if(left<=0){stop();nb.textContent=0;fi.style.width='0';onEnd();return}
+const n=Math.ceil(left);nb.textContent=n;fi.style.width=(left/secs*100)+'%';e.classList.toggle('low',left<=10);
+if(n!=lastN){lastN=n;if(n<=5)tone(880,0,.08,'square',.04)}},200);
+return{stop}}
+function matcher(box,pairs,cb,quiet,time){let sel=null,drag=null,over=0,tm=null;const names=shuf(pairs.map(p=>p[0]));
 box.innerHTML=`<div class="chips" id="pool">${names.map(n=>`<span class="chip" draggable="true">${n}</span>`).join('')}</div>`+pairs.map((p,i)=>`<div class="row"><div class="slot" data-i="${i}"></div><div>${p[1]}</div></div>`).join('')+`<div id="mf"></div><button class="btn o" id="ck">PERIKSA JAWABAN</button>`;
-const pool=box.querySelector('#pool');const put=(t,c)=>{if(!c)return;if(t!==pool&&t.firstChild)pool.appendChild(t.firstChild);t.appendChild(c);if(sel){sel.classList.remove('sel');sel=null}};
+const pool=box.querySelector('#pool');const put=(t,c)=>{if(!c||over)return;if(t!==pool&&t.firstChild)pool.appendChild(t.firstChild);t.appendChild(c);if(sel){sel.classList.remove('sel');sel=null}};
 box.querySelectorAll('.chip').forEach(c=>{c.ondragstart=()=>drag=c;c.onclick=e=>{e.stopPropagation();if(sel)sel.classList.remove('sel');sel=c;c.classList.add('sel')}});
 [pool,...box.querySelectorAll('.slot')].forEach(t=>{t.ondragover=e=>e.preventDefault();t.ondrop=e=>{e.preventDefault();put(t,drag)};t.onclick=()=>put(t,sel)});
-box.querySelector('#ck').onclick=function(){if(pool.children.length)return toast('Pasangkan semua nama dulu ya!');let ok=0,fx='';box.querySelectorAll('.slot').forEach(s=>{const i=s.dataset.i,r=s.textContent==pairs[i][0];if(quiet!=2)s.classList.add(r?'g':'r');r?ok++:fx+=`<div>• ${pairs[i][1].slice(0,40)}… → <b>${pairs[i][0]}</b></div>`});this.remove();
-if(quiet)return cb(ok);ok==pairs.length?SFX.ok():SFX.bad();box.querySelector('#mf').innerHTML=`<div class="fb ${ok==pairs.length?'g':'r'}">${ok==pairs.length?`🎉 Luar biasa, ${name}! Semua pasangan benar!`:`Kamu benar ${ok} dari ${pairs.length} ${name}, terus semangat! Koreksi:${fx}`}<br><button class="btn o" id="go">LANJUT</button></div>`;box.querySelector('#go').onclick=()=>cb(ok)}}
-function Q(q,cb,tag=''){const b=modal(`<h3>${tag}</h3><p class="q">${q.q}</p><div id="a"></div><div id="f"></div>`,false),A=b.querySelector('#a'),F=b.querySelector('#f');
-const fin=(ok,cor)=>{if(q.nr){if(ok)P(q.n,q.p);F.innerHTML='<div class="fb" style="background:#1a5ac8">Jawabanmu sudah tersimpan.<br><button class="btn o">LANJUT</button></div>';F.querySelector('button').onclick=()=>{b.close();cb(ok)};return}ok?(P(q.n,q.p),SFX.ok()):SFX.bad();F.innerHTML=`<div class="fb ${ok?'g':'r'}">${ok?`🎉 Hebat, ${name}! Jawabanmu benar. `:`Belum tepat, ${name}! Jawaban benar: <b>${cor}</b>. `}${q.e||''}${q.r?`<br><i>🤔 Refleksi: ${q.r}</i>`:''}<br><button class="btn o">LANJUT</button></div>`;F.querySelector('button').onclick=()=>{b.close();cb(ok)}};
+const ck=box.querySelector('#ck');const check=to=>{if(over)return;if(!to&&pool.children.length)return toast('Pasangkan semua nama dulu ya!');over=1;tm&&tm.stop();box.querySelectorAll('.chip').forEach(c=>c.draggable=false);let ok=0,fx='';box.querySelectorAll('.slot').forEach(s=>{const i=s.dataset.i,r=s.textContent==pairs[i][0];if(quiet!=2)s.classList.add(r?'g':'r');r?ok++:fx+=`<div>• ${pairs[i][1].slice(0,40)}… → <b>${pairs[i][0]}</b></div>`});ck.remove();
+if(quiet)return cb(ok);ok==pairs.length?SFX.ok():SFX.bad();box.querySelector('#mf').innerHTML=`<div class="fb ${ok==pairs.length?'g':'r'}">${to?'⏰ Waktu habis! ':''}${ok==pairs.length?`🎉 Luar biasa, ${name}! Semua pasangan benar!`:`Kamu benar ${ok} dari ${pairs.length} ${name}, terus semangat! Koreksi:${fx}`}<br><button class="btn o" id="go">LANJUT</button></div>`;box.querySelector('#go').onclick=()=>cb(ok)};ck.onclick=()=>check(0);if(time)tm=timer(box,time,()=>check(1),pool)}
+function Q(q,cb,tag=''){const b=modal(`<h3>${tag}</h3><p class="q">${q.q}</p><div id="a"></div><div id="f"></div>`,false),A=b.querySelector('#a'),F=b.querySelector('#f');let ov=0,tmr=null;
+const fin=(ok,cor,to)=>{if(ov)return;ov=1;tmr&&tmr.stop();A.querySelectorAll('button,input').forEach(x=>x.disabled=1);if(q.nr){if(ok)P(q.n,q.p);F.innerHTML=`<div class="fb" style="background:#1a5ac8">${to?'⏰ Waktu habis! Soal ini dianggap tidak terjawab.':'Jawabanmu sudah tersimpan.'}<br><button class="btn o">LANJUT</button></div>`;F.querySelector('button').onclick=()=>{b.close();cb(ok)};return}ok?(P(q.n,q.p),SFX.ok()):SFX.bad();F.innerHTML=`<div class="fb ${ok?'g':'r'}">${to?'⏰ Waktu habis! ':''}${ok?`🎉 Hebat, ${name}! Jawabanmu benar. `:`Belum tepat, ${name}! Jawaban benar: <b>${cor}</b>. `}${q.e||''}${q.r?`<br><i>🤔 Refleksi: ${q.r}</i>`:''}<br><button class="btn o">LANJUT</button></div>`;F.querySelector('button').onclick=()=>{b.close();cb(ok)}};
+if(q.time&&q.t!='dnd'){const cor=q.t=='tf'?(q.a?'Benar':'Salah'):q.t=='mc'?q.o[q.a]:q.a[0];tmr=timer(b,q.time,()=>{const i=b.querySelector('input');i&&i.blur();fin(false,cor,1)},A)}
 if(q.t=='mc'||q.t=='tf'){const o=q.t=='tf'?['Benar','Salah']:q.o,a=q.t=='tf'?(q.a?0:1):q.a;o.forEach((t,i)=>{const e=el(`<button class="op">${'ABCD'[i]}. ${t}</button>`);e.onclick=()=>{A.querySelectorAll('button').forEach((x,k)=>{x.disabled=1;if(k==a&&!q.nr)x.classList.add('g')});if(q.nr)e.classList.add('sel');else if(i!=a)e.classList.add('r');fin(i==a,o[a])};A.appendChild(e)})}
 else if(q.t=='fill'){A.innerHTML=`<input type="text" placeholder="Ketik jawabanmu"><button class="btn o">JAWAB</button>`;A.querySelector('button').onclick=()=>{const v=A.querySelector('input').value.trim().toLowerCase();if(!v)return;A.querySelector('button').disabled=1;fin(q.a.includes(v),q.a[0])}}
-else{matcher(A,q.pairs,ok=>fin(ok==q.pairs.length,'urutan yang benar sudah ditampilkan'),q.nr?2:1)}}
+else{matcher(A,q.pairs,ok=>fin(ok==q.pairs.length,'urutan yang benar sudah ditampilkan',0),q.nr?2:1,q.time)}}
 function seq(qs,i,end){i<qs.length?Q(qs[i],()=>seq(qs,i+1,end),`Soal ${i+1} dari ${qs.length}`):end()}
 function deck(b,items,render,end,lab){let i=0;const draw=()=>{speechSynthesis.cancel();b.innerHTML=`<button class="x">✕</button><div class="dk">${render(items[i])}</div><div class="nav"><button class="btn" id="pv" ${i?'':'disabled'}>◀</button><span>${i+1} / ${items.length}</span><button class="btn o" id="nx">${i==items.length-1?lab:'▶'}</button></div>`;b.querySelector('.x').onclick=()=>{speechSynthesis.cancel();b.close()};b.querySelector('#pv').onclick=()=>{i--;draw()};b.querySelector('#nx').onclick=()=>i==items.length-1?end():(i++,draw());i3d(b);const sp=b.querySelector('#sp');if(sp)sp.onclick=()=>{if(speechSynthesis.speaking)return speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(items[i].tx);u.lang='id-ID';speechSynthesis.speak(u)}};draw()}
 function i3d(b){const s=b.querySelector('.scene');if(!s)return;const o=s.firstChild;let x=-12,y=25,dn=0,px,py;const set=()=>o.style.transform=`rotateX(${x}deg) rotateY(${y}deg)`;set();
@@ -250,7 +305,7 @@ raf=requestAnimationFrame(loop);return{canvas:cv,fit:rs,show,dispose}}
 function n2(){const b=modal('',false);let i=0,V=null,dead=false;const oc=b.close;
 const stop=()=>{dead=true;speechSynthesis.cancel();if(V){V.dispose();V=null}};b.close=()=>{stop();oc()};
 const mount=()=>{const host=b.querySelector('.d3v');if(V){host.appendChild(V.canvas);V.fit();V.show(i);return}host.innerHTML='<div class="d3ld">⏳ Memuat objek 3D...</div>';load3d().then(L=>{if(dead)return;if(!V)V=make3d(L);const h=b.querySelector('.d3v');if(!h)return;h.innerHTML='';h.appendChild(V.canvas);V.fit();V.show(i)}).catch(()=>{if(dead)return;const h=b.querySelector('.d3v');if(h)h.innerHTML=`<div class="d3ld"><div style="font-size:130px;line-height:1.1">${DV[i][1]}</div><div style="font-size:20px">Objek 3D membutuhkan koneksi internet.</div></div>`})};
-const end=()=>{stop();b.innerHTML='<h2>🧩 Cocokkan Perangkat & Fungsinya</h2><p style="margin-bottom:10px;font-size:18px">Seret (atau klik) nama perangkat ke fungsi yang tepat.</p><div id="m"></div>';matcher(b.querySelector('#m'),DV.map(d=>[d[0],d[3]]),ok=>{P(2,ok*10);b.close();finish(2)})};
+const end=()=>{stop();b.innerHTML='<h2>🧩 Cocokkan Perangkat & Fungsinya</h2><p style="margin-bottom:10px;font-size:18px">Seret (atau klik) nama perangkat ke fungsi yang tepat. Selesaikan sebelum waktu habis!</p><div id="m"></div>';matcher(b.querySelector('#m'),DV.map(d=>[d[0],d[3]]),ok=>{P(2,ok*10);b.close();finish(2)},0,60)};
 const draw=()=>{speechSynthesis.cancel();const d=DV[i],last=i==DV.length-1;b.innerHTML=`<button class="x">✕</button><div class="d3"><div class="d3v"></div><div class="d3t"><h2>${d[0]}</h2></div><button class="ib d3s" id="sp" title="Putar / Stop suara">${SPK_ON}</button><div class="d3h">Seret untuk memutar · Scroll untuk zoom</div></div><p class="d3p">${d[2]}</p><p class="d3x"><b>Contoh:</b> ${DX[i][1]}</p><div class="nav"><button class="btn" id="pv" ${i?'':'disabled'}>◀</button><span>${i+1} / ${DV.length}</span><button class="btn o" id="nx">${last?'UJI KEMAMPUAN ▶':'▶'}</button></div>`;b.querySelector('.x').onclick=()=>b.close();b.querySelector('#pv').onclick=()=>{i--;draw()};b.querySelector('#nx').onclick=()=>last?end():(i++,draw());b.querySelector('#sp').onclick=()=>{if(speechSynthesis.speaking)return speechSynthesis.cancel();const bt=b.querySelector('#sp'),u=new SpeechSynthesisUtterance([d[2],DX[i][1]].join(' ').replace(/<[^>]+>/g,''));u.lang='id-ID';u.onend=u.onerror=()=>bt&&bt.classList.remove('on');bt.classList.add('on');speechSynthesis.speak(u)};mount()};draw()}
 /* ---------- NODE 3 ---------- */
 function topo(t,lab){
@@ -265,9 +320,10 @@ const lg=lab?`<g font-size="4.2" font-family="inherit" font-weight="700" fill="#
 return`<svg viewBox="0 0 100 100">${o}</svg>`}
 const TP=[['Star','Setiap perangkat terhubung ke satu perangkat pusat, biasanya switch pada jaringan Ethernet.',['Mudah menambah perangkat','Gangguan satu kabel biasanya hanya memengaruhi perangkat itu','Lebih mudah mencari lokasi gangguan'],['Jika switch pusat rusak, komunikasi perangkat yang bergantung padanya terganggu','Membutuhkan kabel tersendiri dari tiap perangkat ke pusat']],['Bus','Beberapa perangkat berbagi satu jalur komunikasi utama atau backbone.',['Struktur sederhana','Pada implementasi tradisional, kebutuhan kabel utama relatif sedikit'],['Gangguan backbone memengaruhi seluruh jaringan','Penambahan perangkat dan pencarian gangguan lebih sulit','Performa terbatas saat lalu lintas meningkat']],['Ring','Perangkat terhubung membentuk lingkaran, sehingga setiap perangkat berhubungan dengan tetangganya.',['Pola hubungan teratur','Pada implementasi tertentu, akses terkontrol membantu mengatur giliran pengiriman data'],['Gangguan satu sambungan dapat mengganggu ring sederhana','Perubahan susunan dapat membutuhkan konfigurasi ulang']],['Mesh','Perangkat memiliki beberapa jalur ke node lain. Pada full mesh, setiap node terhubung langsung dengan semua node lainnya.',['Memiliki jalur alternatif jika koneksi terputus','Meningkatkan ketahanan jaringan'],['Membutuhkan lebih banyak sambungan dan biaya','Pengelolaan kompleks ketika node bertambah']],['Tree','Perangkat disusun bertingkat atau hierarkis, menyerupai cabang pohon.',['Cocok untuk jaringan yang dibagi beberapa bagian','Memudahkan pengembangan bertahap','Pengelolaan per cabang atau kelompok'],['Gangguan di tingkat atas memengaruhi cabang di bawahnya','Perlu perencanaan dan pengelolaan lebih cermat']]];
 function n3(){const b=modal('',false);const L=a=>a.map(x=>`<li>${x}</li>`).join('');
-deck(b,TP.map(t=>({n:t[0],t})),d=>`<div class="tp">${topo(d.n.toLowerCase(),1)}</div><div><h2>Topologi ${d.n}</h2><p><b>Cara kerja:</b> ${d.t[1]}</p><p style="margin-top:6px"><b style="color:#6dff9a">Kelebihan</b></p><ul>${L(d.t[2])}</ul><p style="margin-top:6px"><b style="color:#ff8a8a">Kekurangan</b></p><ul>${L(d.t[3])}</ul></div>`,()=>{b.innerHTML='<h2>🃏 Memory Card Topologi</h2><p style="margin-bottom:8px;font-size:18px">Pasangkan nama topologi dengan gambarnya.</p><div class="mem" id="mm"></div><div id="mf" style="margin-top:10px"></div>';
-const cs=shuf(TP.flatMap(t=>[{k:t[0],h:t[0]},{k:t[0],h:topo(t[0].toLowerCase())}]));let op=[],mt=0,lk=0;const g=b.querySelector('#mm');
-cs.forEach(c=>{const e=el(`<div class="cd"><div><b>?</b><i>${c.h}</i></div></div>`);e.onclick=()=>{if(lk||e.classList.contains('f'))return;e.classList.add('f');op.push([e,c]);if(op.length<2)return;lk=1;const[[e1,c1],[e2,c2]]=op;op=[];if(c1.k==c2.k){setTimeout(()=>{e1.classList.add('m');e2.classList.add('m');SFX.ok();P(3,10);lk=0;if(++mt==5){b.querySelector('#mf').innerHTML=`<div class="fb g">🎉 Keren, ${name}! Semua pasangan ditemukan!<br><button class="btn o" id="go">SELESAI MISI</button></div>`;b.querySelector('#go').onclick=()=>{b.close();finish(3)}}},500)}else setTimeout(()=>{e1.classList.remove('f');e2.classList.remove('f');SFX.bad();lk=0},900)};g.appendChild(e)})},'MAIN MEMORY CARD ▶')}
+deck(b,TP.map(t=>({n:t[0],t})),d=>`<div class="tp">${topo(d.n.toLowerCase(),1)}</div><div><h2>Topologi ${d.n}</h2><p><b>Cara kerja:</b> ${d.t[1]}</p><p style="margin-top:6px"><b style="color:#6dff9a">Kelebihan</b></p><ul>${L(d.t[2])}</ul><p style="margin-top:6px"><b style="color:#ff8a8a">Kekurangan</b></p><ul>${L(d.t[3])}</ul></div>`,()=>{const mem=()=>{b.innerHTML='<h2>🃏 Memory Card Topologi</h2><p style="margin-bottom:8px;font-size:18px">Pasangkan nama topologi dengan gambarnya sebelum waktu habis!</p><div class="mem" id="mm"></div><div id="mf" style="margin-top:10px"></div>';
+const cs=shuf(TP.flatMap(t=>[{k:t[0],h:t[0]},{k:t[0],h:topo(t[0].toLowerCase())}]));let op=[],mt=0,lk=0,over=0;const g=b.querySelector('#mm');
+const tm=timer(b,60,()=>{over=1;lk=1;b.querySelector('#mf').innerHTML=`<div class="fb r">⏰ Waktu habis, ${name}! Kamu menemukan ${mt} dari 5 pasangan.<br><button class="btn o" id="go">COBA LAGI</button></div>`;SFX.bad();b.querySelector('#go').onclick=()=>{if(!done[3]){pts-=mt*10;upd()}mem()}},g);
+cs.forEach(c=>{const e=el(`<div class="cd"><div><b>?</b><i>${c.h}</i></div></div>`);e.onclick=()=>{if(over||lk||e.classList.contains('f'))return;e.classList.add('f');op.push([e,c]);if(op.length<2)return;lk=1;const[[e1,c1],[e2,c2]]=op;op=[];if(c1.k==c2.k){setTimeout(()=>{if(over)return;e1.classList.add('m');e2.classList.add('m');SFX.ok();P(3,10);lk=0;if(++mt==5){tm.stop();b.querySelector('#mf').innerHTML=`<div class="fb g">🎉 Keren, ${name}! Semua pasangan ditemukan!<br><button class="btn o" id="go">SELESAI MISI</button></div>`;b.querySelector('#go').onclick=()=>{b.close();finish(3)}}},500)}else setTimeout(()=>{if(over)return;e1.classList.remove('f');e2.classList.remove('f');SFX.bad();lk=0},900)};g.appendChild(e)})};mem()},'MAIN MEMORY CARD ▶')}
 /* ---------- NODE 4 & 5: SIMULATOR ---------- */
 function sim(mode){
 let D=[],Lk=[],tool=null,cab=null,sl=null,uid=0;
@@ -910,8 +966,46 @@ const FQ=[
 {t:'mc',q:'Pemerintah kota menghubungkan balai kota dengan tiga dinas, dan tiap dinas punya beberapa kantor. Jaringan ingin dikelola per cabang serta dikembangkan bertahap. Topologi yang paling sesuai adalah...',o:['Full mesh, karena paling murah','Tree, karena tersusun bertingkat dan mudah dikelola per cabang','Bus, karena tidak mungkin terganggu','Ring, karena tidak memerlukan perencanaan'],a:1},
 {t:'tf',q:'Ani berpendapat bahwa Wi-Fi dan kabel Ethernet sama-sama membawa data lewat media fisik berupa kabel.',a:false},
 {t:'dnd',q:'Pasangkan perangkat dengan peran yang tepat dalam jaringan sekolahmu.',pairs:[['Router','Menghubungkan jaringan sekolah ke jaringan lain atau internet berdasarkan IP'],['Switch','Menghubungkan semua komputer lab dalam satu jaringan lokal'],['Server','Menyimpan file tugas yang diakses banyak siswa']]}
-].map(q=>({...q,n:6,p:10,e:q.e||'',nr:1}));
-function n6(){seq(FQ,0,()=>{finish(6);lbSave();SFX.win();const b=modal(`<h2>🏆 Selamat, ${name}!</h2><p style="font-size:26px">Total poinmu: <b style="color:var(--yl);font-size:48px">${pts}</b> / 400</p><p style="font-size:20px;margin:10px 0">Kamu resmi menjadi <b>Penjelajah Jaringan RHINO NET</b>!</p><button class="btn o" id="ct">🎓 DOWNLOAD SERTIFIKAT</button> <button class="btn" id="bk">KEMBALI KE PETA</button>`);b.querySelector('#bk').onclick=b.querySelector('.x').onclick;b.querySelector('#ct').onclick=cert})}
+].map(q=>({...q,n:6,p:10,e:q.e||'',nr:1,time:q.t=='dnd'?30:q.t=='fill'?30:q.t=='tf'?30:30}));
+/* ---------- NODE 6: SELAMATKAN KOTA RHINO NET ---------- */
+const FPL=[['🏘️','Kantor Desa'],['🏫','Lab Sekolah'],['💻','Lab Komputer'],['🏢','Kantor Pusat'],['📡','Stasiun Modem'],['🏥','Rumah Sakit'],['🏦','Bank Kota'],['🏛️','Balai Kota'],['🛰️','Menara Wi-Fi'],['🏙️','Pusat Kendali Kota']];
+function n6(){
+const START=240,BONUS=5,CBONUS=3,fmt=s=>{s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const run=()=>{
+clear();
+const all=FQ.map((q,i)=>({...q,pl:FPL[i]||['🏢','Gedung']})),boss=all.filter(q=>q.t=='dnd'),qs=shuf(all.filter(q=>q.t!='dnd')).concat(boss);
+let i=0,hearts=3,combo=0,nok=0,over=0,paused=0,pauseAt=0,lastN=0;const res=[];let deadline=Date.now()+START*1000;
+const d=el(`<div class="scr map fc"><div class="fcd"></div><div class="fch"><div class="fchh" id="hr"></div><div class="fct">🏙️ SELAMATKAN KOTA<br><small>RHINO NET</small></div><div class="fcr"><div class="fcc" id="cb"></div><div class="fck" id="tk"></div></div></div><div class="fcbar"><i id="tb"></i></div><div class="fcs" id="st"></div><div class="box fcq" id="qb"></div><button class="btn fcx" title="Kembali ke peta">🏠</button></div>`);
+S.appendChild(d);
+const $=s=>d.querySelector(s),qb=$('#qb');
+const hud=()=>{$('#hr').innerHTML=[0,1,2].map(k=>`<span class="${k<hearts?'':'x'}">❤️</span>`).join('');$('#cb').innerHTML=combo>=2?`🔥 COMBO x${combo}`:'';$('#cb').style.display=combo>=2?'block':'none'};
+const strip=()=>{$('#st').innerHTML=qs.map((q,k)=>`<div class="fcb ${k<i?(res[k]==1?'on':'off'):k==i?'cur':''}"><span>${k<i&&res[k]!=1?'💥':q.pl[0]}</span></div>`).join('')};
+const flash=(t,c)=>{const f=el(`<div class="fcf ${c||''}">${t}</div>`);d.appendChild(f);setTimeout(()=>f.remove(),1100)};
+const stop=()=>{clearInterval(iv)};
+const tick=()=>{if(over)return;if(!d.isConnected){stop();return}if(paused)return;const left=(deadline-Date.now())/1000;
+if(left<=0){$('#tk').textContent='⏱ 0:00';lose('time');return}
+$('#tk').textContent='⏱ '+fmt(left);$('#tb').style.width=Math.min(100,left/START*100)+'%';$('#tk').classList.toggle('low',left<=20);
+const n=Math.ceil(left);if(n!=lastN){lastN=n;if(n<=5)tone(880,0,.08,'square',.04)}};
+const iv=setInterval(tick,200);
+const lose=why=>{if(over)return;over=1;stop();SFX.bad();const b=modal(`<div style="text-align:center"><h2>💥 Jaringan Kota Padam!</h2><p style="font-size:22px;margin:8px 0">${why=='time'?'Waktu habis sebelum semua gangguan teratasi.':'Hatimu habis karena beberapa jawaban belum tepat.'}</p><p style="font-size:22px;margin-bottom:6px">Kamu memperbaiki <b style="color:var(--yl)">${nok}</b> dari ${qs.length} insiden.</p><p style="font-size:18px;margin-bottom:14px">Tenang, kamu boleh mencoba lagi sebanyak yang kamu mau. Soal akan diacak ulang!</p><button class="btn o" id="rt">🔄 COBA LAGI</button> <button class="btn" id="bk2">KEMBALI KE PETA</button></div>`,false);
+b.querySelector('#rt').onclick=()=>{b.close();run()};b.querySelector('#bk2').onclick=()=>{b.close();map()}};
+const win=()=>{over=1;stop();const left=(deadline-Date.now())/1000;for(let k=0;k<nok;k++)P(6,10);finish(6);lbSave();SFX.win();const st=pts>=400?3:pts>=300?2:1;
+const b=modal(`<div style="text-align:center"><h2>🏆 Selamat, ${name}!</h2><p style="font-size:22px">Kota RHINO NET berhasil kamu selamatkan!</p><div style="font-size:56px;margin:4px 0;letter-spacing:6px">${'⭐'.repeat(st)}${'☆'.repeat(3-st)}</div><p style="font-size:26px;margin-top:6px">Total poinmu: <b style="color:var(--yl);font-size:48px">${pts}</b> / 400</p><p style="font-size:20px;margin:10px 0">Kamu resmi menjadi <b>Penjelajah Jaringan RHINO NET</b>!</p><button class="btn o" id="ct">🎓 DOWNLOAD SERTIFIKAT</button> <button class="btn" id="bk">KEMBALI KE PETA</button></div>`);
+b.querySelector('#bk').onclick=b.querySelector('.x').onclick;b.querySelector('#ct').onclick=cert};
+const next=()=>{if(over)return;i++;if(i>=qs.length)return win();strip();show()};
+const show=()=>{const q=qs[i],bs=q.t=='dnd';
+qb.innerHTML=`<div class="fci ${bs?'boss':''}">${bs?'🚨 INSIDEN BESAR':'⚠️ INSIDEN '+(i+1)+' / '+qs.length} · ${q.pl[0]} ${q.pl[1]} offline!</div><p class="q">${q.q}</p><div id="a"></div><div id="f"></div>`;
+const A=qb.querySelector('#a'),F=qb.querySelector('#f');let ans=0;
+const resolve=(good,cor)=>{if(ans||over)return;ans=1;A.querySelectorAll('button,input').forEach(x=>x.disabled=1);res[i]=good?1:2;
+if(good){nok++;combo++;SFX.ok();const bn=BONUS+(combo>=3?CBONUS:0);deadline+=bn*1000;flash('+'+bn+' detik'+(combo>=2?' · COMBO x'+combo:''),'g');hud();F.innerHTML='<div class="fb g">🎉 Terpasang! Gedung menyala kembali.</div>';setTimeout(next,1100)}
+else{combo=0;hearts--;SFX.bad();hud();paused=1;pauseAt=Date.now();F.innerHTML=`<div class="fb r">💔 Jawabanmu kurang tepat, ${name}!${hearts<=0?'<br>Hatimu sudah habis.':''}<br><button class="btn o">LANJUT</button></div>`;
+F.querySelector('button').onclick=()=>{if(hearts<=0)return lose('hati');deadline+=Date.now()-pauseAt;paused=0;next()}}};
+if(q.t=='mc'||q.t=='tf'){const o=q.t=='tf'?['Benar','Salah']:q.o,a=q.t=='tf'?(q.a?0:1):q.a;o.forEach((t,k)=>{const e=el(`<button class="op">${'ABCD'[k]}. ${t}</button>`);e.onclick=()=>{e.classList.add(k==a?'g':'r');resolve(k==a,o[a])};A.appendChild(e)})}
+else if(q.t=='fill'){A.innerHTML=`<input type="text" placeholder="Ketik jawabanmu" autocomplete="off"><button class="btn o">JAWAB</button>`;const inp=A.querySelector('input'),bt=A.querySelector('button');bt.onclick=()=>{const v=inp.value.trim().toLowerCase();if(!v)return;inp.blur();resolve(q.a.includes(v),q.a[0])};inp.onkeydown=e=>{e.stopPropagation();if(e.key=='Enter')bt.click()};inp.onkeyup=inp.onkeypress=e=>e.stopPropagation()}
+else{matcher(A,q.pairs,n=>resolve(n==q.pairs.length,q.pairs.map(p=>`${p[0]} → ${p[1].slice(0,38)}…`).join('<br>')),2)}};
+$('.fcx').onclick=()=>{over=1;stop();map()};
+hud();strip();show();tick()};
+run()}
 const esc=t=>String(t).replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]));
 /* ---------- LEADER BOARD ---------- */
 const LBK='rhinonet_leaderboard_v1';
